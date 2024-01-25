@@ -4,7 +4,7 @@
 
 int main(int argc, char *argv[]) {
     srand(time(NULL));
-    
+    int delay = 100;
     int result = initSDL_main(argc, argv);
 
     if (result != 0) {
@@ -18,6 +18,8 @@ int main(int argc, char *argv[]) {
     SDL_Event event;
     int continuer = 1;
 
+    ajouterAlien(&listeAliens, &numberOfAliens);
+
     while (continuer) {
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
@@ -25,8 +27,13 @@ int main(int argc, char *argv[]) {
             }
         }
         Alien *courant = listeAliens;
+        Uint32 tempsEcoule = SDL_GetTicks();
+        int tempsint = (int)tempsEcoule;
 
-        ajouterAlien(&listeAliens, &numberOfAliens);
+        if (tempsint % 1000 < delay){
+            ajouterAlien(&listeAliens, &numberOfAliens);
+        }
+
         
         while (courant != NULL) {
             deplacerAlien(courant);
@@ -43,7 +50,7 @@ int main(int argc, char *argv[]) {
         }
         
         mettreAJourAffichage();
-        SDL_Delay(100);
+        SDL_Delay(delay);
     }
 
     courant = listeAliens;
