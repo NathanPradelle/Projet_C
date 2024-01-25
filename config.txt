@@ -1,2 +1,6 @@
+// graphic config
 SCREEN_WIDTH=1600
 SCREEN_HEIGHT=800
+
+// alien config
+DEFAULT_SPEED=100

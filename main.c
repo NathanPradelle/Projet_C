@@ -6,7 +6,6 @@ int main(int argc, char *argv[]) {
     srand(time(NULL));
 
     int result = initSDL_main(argc, argv);
-
     if (result != 0) {
         return result;
     }
@@ -43,7 +42,7 @@ int main(int argc, char *argv[]) {
         }
         
         mettreAJourAffichage();
-        SDL_Delay(100);
+        SDL_Delay(10);
     }
 
     courant = listeAliens;

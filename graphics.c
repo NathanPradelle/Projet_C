@@ -10,8 +10,11 @@ int windowsConfig(int * screenWidth, int * screenHeight) {
         return 1;
     }
 
-    fscanf(configFile, "SCREEN_WIDTH=%d \n", screenWidth);
-    fscanf(configFile, "SCREEN_HEIGHT=%d \n", screenHeight);
+    char line[150];
+    while (fgets(line, sizeof(line), configFile) != NULL) {
+        sscanf(line, "SCREEN_WIDTH=%d", screenWidth);
+        sscanf(line, "SCREEN_HEIGHT=%d", screenHeight);
+    }
 
     fclose(configFile);
     return 0;
