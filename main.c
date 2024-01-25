@@ -6,8 +6,8 @@ int main(int argc, char *argv[]) {
     
     srand(time(NULL));
     int delay = 0;
-    int result = initSDL_main(argc, argv);
 
+    int result = initSDL_main(argc, argv);
     if (result != 0) {
         return result;
     }
@@ -21,8 +21,8 @@ int main(int argc, char *argv[]) {
     int continuer = 1;
 
     ajouterAlien(&listeAliens, &numberOfAliens);
-
-
+    
+    int tempsint = 0;
     while (continuer) {
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
@@ -50,22 +50,19 @@ int main(int argc, char *argv[]) {
         }
         
         if (!menuActif) {
-
+            effacerFenetre();
             Alien *courant = listeAliens;
-            Uint32 tempsEcoule = SDL_GetTicks();
-            int tempsint = (int)tempsEcoule;
+            tempsint++;
 
-            if (tempsint % 1000 == 0){
+            if (tempsint > 500){
                 ajouterAlien(&listeAliens, &numberOfAliens);
+                tempsint = 0;
             }
 
-            
             while (courant != NULL) {
                 deplacerAlien(courant);
                 courant = courant->next;
             }
-
-            effacerFenetre();
 
             courant = listeAliens;
 
@@ -74,14 +71,17 @@ int main(int argc, char *argv[]) {
                 courant = courant->next;
             }
             
+            detecterCollisions(listeAliens);
+
+            while (courant != NULL) {
+                Alien *suivant = courant->next;
+                detruireAlien(courant);
+                courant = suivant;
+            }
             mettreAJourAffichage();
             SDL_Delay(delay);
-        }
-
-        else {
-            
+        } else {
             mettreAJourAffichageMenu();
-
         }
     }
 
@@ -91,7 +91,7 @@ int main(int argc, char *argv[]) {
             Alien *suivant = courant->next;
             detruireAlien(courant);
             courant = suivant;
-    }
+        }
 
     cleanupSDL();
 

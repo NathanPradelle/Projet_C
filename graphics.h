@@ -21,8 +21,9 @@ int initSDL_main(int argc, char *argv[]);
 void cleanupSDL();
 void effacerFenetre();
 void mettreAJourAffichage();
+void detecterCollisions(Alien *listeAliens);
 void dessinerAlien(const Alien *alien);
 void mettreAJourAffichageMenu();
-void dessinerTexte(const char *texte, int x, int y, int taillePolice);
+// void dessinerTexte(const char *texte, int x, int y, int taillePolice);
 
 #endif
