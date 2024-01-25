@@ -22,7 +22,7 @@ extern int xBouton;
 extern int yBouton;
 
 void initSDL();
-int initSDL_main(int argc, char *argv[]);
+int initSDL_main();
 void cleanupSDL();
 void effacerFenetre();
 void mettreAJourAffichage();
