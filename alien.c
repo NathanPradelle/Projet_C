@@ -53,22 +53,22 @@ void deplacerAlien(Alien *alien, int tempsint) {
         switch (direction) {
             case 0:
                 if (alien->y > 15) {
-                    alien->y -= 1;
+                    alien->y -= alien->travelDistance;
                 }
                 break;
             case 1:
                 if (alien->y < 885) {  
-                    alien->y += 1;
+                    alien->y += alien->travelDistance;
                 }
                 break;
             case 2:
                 if (alien->x > 15) {
-                    alien->x -= 1;
+                    alien->x -= alien->travelDistance;
                 }
                 break;
             case 3:
                 if (alien->x < 1585) {  
-                    alien->x += 1;
+                    alien->x += alien->travelDistance;
                 }
                 break;
         }
