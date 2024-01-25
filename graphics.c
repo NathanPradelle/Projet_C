@@ -127,7 +127,7 @@ void itemGenerer(SDL_Renderer* renderer, int x, int y, int size, SDL_Color fillC
 }
 
 void dessinerAlien(const Alien *alien) {
-    if(alien->alive==0 || alien->age>=200){
+    if(alien->alive==0 || alien->age>=500){
             SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
     } else {
         if(alien->type==0){
