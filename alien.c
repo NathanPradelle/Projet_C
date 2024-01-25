@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int alienConfig(int *defaultSpeed, int *alienTravelDistance, int *alienWidth, int *alienHeight) {
+int alienConfig(float *defaultSpeed, int *alienTravelDistance, int *alienWidth, int *alienHeight) {
     FILE *configFile = fopen("config.txt", "r");
     if (configFile == NULL) {
         perror("Impossible d'ouvrir le fichier de configuration");
@@ -12,7 +12,7 @@ int alienConfig(int *defaultSpeed, int *alienTravelDistance, int *alienWidth, in
 
     char line[150];
     while (fgets(line, sizeof(line), configFile) != NULL) {
-        sscanf(line, "DEFAULT_SPEED=%d", defaultSpeed);
+        sscanf(line, "DEFAULT_SPEED=%f", defaultSpeed);
         sscanf(line, "DEFAULT_TRAVEL_DISTANCE=%d", alienTravelDistance);
         sscanf(line, "ALIEN_WIDTH=%d", alienWidth);
         sscanf(line, "ALIEN_HEIGHT=%d", alienHeight);
@@ -23,7 +23,8 @@ int alienConfig(int *defaultSpeed, int *alienTravelDistance, int *alienWidth, in
 }
 
 Alien *creerAlien(int *numberOfAliens) {
-    int defaultSpeed, alienTravelDistance, alienWidth, alienHeight = 5;
+    float defaultSpeed = 0;
+    int alienTravelDistance, alienWidth, alienHeight = 5;
     
     alienConfig(&defaultSpeed, &alienTravelDistance, &alienWidth, &alienHeight);
 
@@ -37,6 +38,7 @@ Alien *creerAlien(int *numberOfAliens) {
         nouvelAlien->travelDistance = alienTravelDistance;
         nouvelAlien->width = alienWidth;
         nouvelAlien->height = alienHeight;
+        nouvelAlien->time = 0;
         nouvelAlien->next = NULL;
     }
     return nouvelAlien;
@@ -46,10 +48,12 @@ void detruireAlien(Alien *alien) {
     free(alien);
 }
 
-void deplacerAlien(Alien *alien, int tempsint) {
+void deplacerAlien(Alien *alien) {
     int direction = rand() % 4;
 
-    if (tempsint % alien->speed == 0) {
+    alien->time += 1;
+
+    if (alien->time * alien->speed > 100) {
         switch (direction) {
             case 0:
                 if (alien->y > 15) {
@@ -72,6 +76,7 @@ void deplacerAlien(Alien *alien, int tempsint) {
                 }
                 break;
         }
+        alien->time = 0;
     }
 }
 

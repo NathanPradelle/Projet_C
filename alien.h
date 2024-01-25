@@ -6,13 +6,14 @@ typedef struct Alien {
     int health;
     int x;
     int y;
-    int speed;
+    float speed;
     int travelDistance;
     int width;
     int height;
     int age;
     int satiety;
     int eatDamage;
+    int time;
     struct Race *race;
     struct Alien *next;
 } Alien;
@@ -30,7 +31,7 @@ typedef struct Race {
 
 Alien *creerAlien(int *numberOfAliens);
 void detruireAlien(Alien *alien);
-void deplacerAlien(Alien *alien, int tempsint);
+void deplacerAlien(Alien *alien);
 void ajouterAlien(Alien **liste, int *numberOfAliens);
 
 #endif

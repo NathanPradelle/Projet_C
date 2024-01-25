@@ -19,30 +19,29 @@ int main(int argc, char *argv[]) {
     int continuer = 1;
 
     ajouterAlien(&listeAliens, &numberOfAliens);
-
-
+    
+    int tempsint = 0;
     while (continuer) {
+        effacerFenetre();
+        Alien *courant = listeAliens;
+        
+        tempsint++;
+
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
                 continuer = 0;
             }
         }
 
-        Alien *courant = listeAliens;
-        Uint32 tempsEcoule = SDL_GetTicks();
-        int tempsint = (int)tempsEcoule;
-
-
-        if (tempsint % 500 == 0){
+        if (tempsint > 50){
             ajouterAlien(&listeAliens, &numberOfAliens);
+            tempsint = 0;
         }
 
         while (courant != NULL) {
-            deplacerAlien(courant, tempsint);
+            deplacerAlien(courant);
             courant = courant->next;
         }
-
-        effacerFenetre();
 
         courant = listeAliens;
 
