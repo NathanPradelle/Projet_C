@@ -1,5 +1,4 @@
 #include "alien.h"
-#include <stdlib.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -45,6 +44,7 @@ void deplacerAlien(Alien *alien) {
             break;
     }
 }
+
 
 void ajouterAlien(Alien **liste, int *numberOfAliens) {
     Alien *nouvelAlien = creerAlien(numberOfAliens);

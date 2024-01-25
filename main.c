@@ -24,11 +24,10 @@ int main(int argc, char *argv[]) {
                 continuer = 0;
             }
         }
-
         Alien *courant = listeAliens;
 
         ajouterAlien(&listeAliens, &numberOfAliens);
-
+        
         while (courant != NULL) {
             deplacerAlien(courant);
             courant = courant->next;
