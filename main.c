@@ -25,17 +25,28 @@ int main(int argc, char *argv[]) {
 
     while (continuer) {
         while (SDL_PollEvent(&event)) {
-            switch (event.type) {
-                case SDL_QUIT:
-                    continuer = 0;
-                    break;
-                case SDL_MOUSEMOTION:
-                    break;
-                case SDL_KEYDOWN:
-                    if (event.key.keysym.sym == SDLK_ESCAPE) {
-                    menuActif = !menuActif;}
-                    break;
+            if (event.type == SDL_QUIT) {
+            continuer = 0;
+        } else if (event.type == SDL_KEYDOWN) {
+            if (event.key.keysym.sym == SDLK_ESCAPE) {
+                menuActif = !menuActif;
             }
+        } else if (menuActif && event.type == SDL_MOUSEBUTTONDOWN) {
+            int mouseX = event.button.x;
+            int mouseY = event.button.y;
+
+            if (mouseX >= xBouton && mouseX <= xBouton + largeurBouton &&
+                mouseY >= yBouton && mouseY <= yBouton + hauteurBouton) {
+                menuActif = !menuActif; // Désactive le menu
+            }
+
+            // Bouton "Quit"
+            if (mouseX >= xBouton && mouseX <= xBouton + largeurBouton &&
+                mouseY >= yBouton + hauteurBouton + espacementBouton &&
+                mouseY <= yBouton + 2 * (hauteurBouton + espacementBouton)) {
+                continuer = 0; // Quitte l'application
+            }
+
         }
         
         if (!menuActif) {

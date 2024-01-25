@@ -1,7 +1,7 @@
 #ifndef GRAPHICS_H
 #define GRAPHICS_H
 
-#include "vendor/include/SDL_ttf.h"
+#include <SDL_ttf.h>
 #include <SDL.h>
 #include "alien.h"
 

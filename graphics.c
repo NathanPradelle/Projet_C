@@ -85,22 +85,22 @@ void mettreAJourAffichageMenu() {
     // Bouton "Continue"
     SDL_Rect rectContinue = {xBouton, yBouton, largeurBouton, hauteurBouton};
     SDL_RenderFillRect(renderer, &rectContinue);
-    dessinerTexte("Continue", xBouton + 20, yBouton + 10, 20);
+    //dessinerTexte("Continue", xBouton + 20, yBouton + 10, 20);
 
     // Bouton "Quit"
     SDL_Rect rectQuit = {xBouton, yBouton + hauteurBouton + espacementBouton, largeurBouton, hauteurBouton};
     SDL_RenderFillRect(renderer, &rectQuit);
-    dessinerTexte("Quit", xBouton + 20, yBouton + hauteurBouton + espacementBouton + 10, 20);
+    //dessinerTexte("Quit", xBouton + 20, yBouton + hauteurBouton + espacementBouton + 10, 20);
 
     // Bouton "Sauvegarder"
     SDL_Rect rectSauvegarder = {xBouton, yBouton + 2 * (hauteurBouton + espacementBouton), largeurBouton, hauteurBouton};
     SDL_RenderFillRect(renderer, &rectSauvegarder);
-    dessinerTexte("Sauvegarder", xBouton + 20, yBouton + 2 * (hauteurBouton + espacementBouton) + 10, 20);
+    //dessinerTexte("Sauvegarder", xBouton + 20, yBouton + 2 * (hauteurBouton + espacementBouton) + 10, 20);
 
     SDL_RenderPresent(renderer);
 }
 
-
+/*
 void dessinerTexte(const char *texte, int x, int y, int taillePolice) {
 
     
@@ -136,3 +136,4 @@ void dessinerTexte(const char *texte, int x, int y, int taillePolice) {
 
     
 }
+*/

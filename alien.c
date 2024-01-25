@@ -20,7 +20,7 @@ void detruireAlien(Alien *alien) {
 }
 
 void deplacerAlien(Alien *alien) {
-    int direction = rand() % 4;
+    int direction = rand() % 5;
 
     switch (direction) {
         case 0:

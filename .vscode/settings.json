@@ -2,6 +2,7 @@
     "files.associations": {
         "alien.h": "c",
         "graphics.h": "c",
-        "sdl_ttf.h": "c"
+        "sdl_ttf.h": "c",
+        "sdl.h": "c"
     }
 }
