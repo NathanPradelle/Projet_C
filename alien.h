@@ -7,7 +7,9 @@ typedef struct Alien {
     int x;
     int y;
     int speed;
-    int size;
+    int travelDistance;
+    int width;
+    int height;
     int age;
     int satiety;
     int eatDamage;
@@ -28,7 +30,7 @@ typedef struct Race {
 
 Alien *creerAlien(int *numberOfAliens);
 void detruireAlien(Alien *alien);
-void deplacerAlien(Alien *alien);
+void deplacerAlien(Alien *alien, int tempsint);
 void ajouterAlien(Alien **liste, int *numberOfAliens);
 
 #endif

@@ -32,13 +32,13 @@ int main(int argc, char *argv[]) {
         Uint32 tempsEcoule = SDL_GetTicks();
         int tempsint = (int)tempsEcoule;
 
-        if (tempsint % 1000 == 0){
+
+        if (tempsint % 500 == 0){
             ajouterAlien(&listeAliens, &numberOfAliens);
         }
 
-        
         while (courant != NULL) {
-            deplacerAlien(courant);
+            deplacerAlien(courant, tempsint);
             courant = courant->next;
         }
 
