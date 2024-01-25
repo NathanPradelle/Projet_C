@@ -6,11 +6,13 @@ int main(int argc, char *argv[]) {
     
     srand(time(NULL));
     int delay = 0;
-
     int result = initSDL_main(argc, argv);
     if (result != 0) {
         return result;
     }
+    
+    int xBouton = (screenWidth - largeurBouton) / 2;
+    int yBouton = (screenHeight - (3 * hauteurBouton + 2 * espacementBouton)) / 2;
 
     Alien *listeAliens = NULL;
     int numberOfAliens = 0;
@@ -47,8 +49,20 @@ int main(int argc, char *argv[]) {
                 continuer = 0; // Quitte l'application
             }
 
+            if (mouseX >= xBouton && mouseX <= xBouton + largeurBouton &&
+                mouseY >= yBouton + 2 * (hauteurBouton + espacementBouton) &&
+                mouseY <= yBouton + 3 * (hauteurBouton + espacementBouton)) {
+                actionBoutonSauvegarder("sauvegarde_1.txt", listeAliens);
+            }
+
+            if (mouseX >= xBouton && mouseX <= xBouton + largeurBouton &&
+                mouseY >= yBouton + 3 * (hauteurBouton + espacementBouton) &&
+                mouseY <= yBouton + 4 * (hauteurBouton + espacementBouton)) {
+                chargerListeDepuisFichier("sauvegarde_1.txt", &listeAliens, &numberOfAliens);
+            }
+
         }
-        
+        }
         if (!menuActif) {
             effacerFenetre();
             Alien *courant = listeAliens;
@@ -81,7 +95,7 @@ int main(int argc, char *argv[]) {
             mettreAJourAffichage();
             SDL_Delay(delay);
         } else {
-            mettreAJourAffichageMenu();
+            mettreAJourAffichageMenu(xBouton, yBouton);
         }
     }
 

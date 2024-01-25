@@ -99,3 +99,22 @@ void ajouterAlien(Alien **liste, int *numberOfAliens) {
         }
     }
 }
+
+void ajouterAlienDepuisFichier(Alien **liste, int *numberOfAliens, long id, int x, int y) {
+    Alien *nouvelAlien = creerAlien(numberOfAliens);
+    if (nouvelAlien != NULL) {
+        nouvelAlien->id = id;
+        nouvelAlien->x = x;
+        nouvelAlien->y = y;
+
+        if (*liste == NULL) {
+            *liste = nouvelAlien;
+        } else {
+            Alien *courant = *liste;
+            while (courant->next != NULL) {
+                courant = courant->next;
+            }
+            courant->next = nouvelAlien;
+        }
+    }
+}
