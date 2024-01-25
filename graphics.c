@@ -1,4 +1,5 @@
 #include "graphics.h"
+#include "alien.h"
 
 SDL_Renderer *renderer = NULL;
 SDL_Window *fenetre = NULL;
@@ -213,6 +214,8 @@ void actionBoutonSauvegarder(const char *nomFichier, Alien *listeAliens) {
 
 void chargerListeDepuisFichier(const char *nomFichier, Alien **listeAliens, int *numberOfAliens) {
     // Ouvrir le fichier en mode lecture
+
+    viderListeAliens(listeAliens);
     long id;
     int x, y;
     FILE *fichier = fopen(nomFichier, "r");

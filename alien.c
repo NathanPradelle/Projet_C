@@ -60,22 +60,22 @@ void deplacerAlien(Alien *alien) {
     if (alien->time * alien->speed > 100) {
         switch (direction) {
             case 0:
-                if (alien->y > alien->height) {
+                if (alien->y > alien->height + alien->travelDistance) {
                     alien->y -= alien->travelDistance;
                 }
                 break;
             case 1:
-                if (alien->y < screenHeight - alien->height) {  
+                if (alien->y < screenHeight - alien->height - alien->travelDistance) {  
                     alien->y += alien->travelDistance;
                 }
                 break;
             case 2:
-                if (alien->x > alien->width) {
+                if (alien->x > alien->width + alien->travelDistance) {
                     alien->x -= alien->travelDistance;
                 }
                 break;
             case 3:
-                if (alien->x < screenWidth - alien->width) {  
+                if (alien->x < screenWidth - alien->width - alien->travelDistance) {  
                     alien->x += alien->travelDistance;
                 }
                 break;
@@ -116,5 +116,13 @@ void ajouterAlienDepuisFichier(Alien **liste, int *numberOfAliens, long id, int 
             }
             courant->next = nouvelAlien;
         }
+    }
+}
+
+void viderListeAliens(Alien **listeAliens) {
+    while (*listeAliens != NULL) {
+        Alien *suivant = (*listeAliens)->next;
+        free(*listeAliens);  // Libérer la mémoire de l'élément actuel
+        *listeAliens = suivant;
     }
 }
