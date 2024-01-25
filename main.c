@@ -1,43 +1,67 @@
-#include <SDL.h>
+#include "graphics.h"
+#include "alien.h"
+#include <time.h>
 
 int main(int argc, char *argv[]) {
-    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-        return 1;
+    srand(time(NULL));
+    int delay = 100;
+    int result = initSDL_main(argc, argv);
+
+    if (result != 0) {
+        return result;
     }
 
-    SDL_Window *fenetre = SDL_CreateWindow("Ma fenêtre", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 600, SDL_WINDOW_SHOWN);
-    if (fenetre == NULL) {
-        SDL_Quit();
-        return 1;
-    }
+    Alien *listeAliens = NULL;
+    int numberOfAliens = 0;
+    Alien *courant = NULL;
 
-    SDL_Renderer *renderer = SDL_CreateRenderer(fenetre, -1, SDL_RENDERER_ACCELERATED);
-    if (renderer == NULL) {
-        SDL_DestroyWindow(fenetre);
-        SDL_Quit();
-        return 1;
-    }
-
-    // Boucle d'événements SDL
     SDL_Event event;
-    int running = 1;
+    int continuer = 1;
 
-    while (running) {
+    ajouterAlien(&listeAliens, &numberOfAliens);
+
+    while (continuer) {
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
-                running = 0;
+                continuer = 0;
             }
         }
+        Alien *courant = listeAliens;
+        Uint32 tempsEcoule = SDL_GetTicks();
+        int tempsint = (int)tempsEcoule;
 
-        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-        SDL_RenderClear(renderer);
-        SDL_RenderPresent(renderer);
+        if (tempsint % 1000 < delay){
+            ajouterAlien(&listeAliens, &numberOfAliens);
+        }
+
+        
+        while (courant != NULL) {
+            deplacerAlien(courant);
+            courant = courant->next;
+        }
+
+        effacerFenetre();
+
+        courant = listeAliens;
+
+        while (courant != NULL) {
+            dessinerAlien(courant);
+            courant = courant->next;
+        }
+        
+        mettreAJourAffichage();
+        SDL_Delay(delay);
     }
 
-    // Libération des ressources
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(fenetre);
-    SDL_Quit();
+    courant = listeAliens;
+
+        while (courant != NULL) {
+            Alien *suivant = courant->next;
+            detruireAlien(courant);
+            courant = suivant;
+    }
+
+    cleanupSDL();
 
     return 0;
 }
