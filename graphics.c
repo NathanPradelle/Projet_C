@@ -10,6 +10,8 @@ int espacementBouton = 20;
 int xBouton;
 int yBouton;
 
+
+
 int windowsConfig(int * screenWidth, int * screenHeight) {
     FILE *configFile = fopen("config.txt", "r");
     if (configFile == NULL) {
@@ -77,10 +79,10 @@ void detecterCollisions(Alien *listeAliens) {
         Alien *alien2 = alien1->next;
 
         while (alien2 != NULL) {
-            if (alien1->x < alien2->x + 15 &&
-                alien1->x + 15 > alien2->x &&
-                alien1->y < alien2->y + 15 &&
-                alien1->y + 15 > alien2->y) {
+            if (alien1->x < alien2->x + alien2->width &&
+                alien1->x + alien1->width > alien2->x &&
+                alien1->y < alien2->y + alien2->height &&
+                alien1->y + alien1->height > alien2->y) {
                 // printf("Collision détectée entre deux aliens!\n");
                 if(alien1->type!=alien2->type && alien1->alive && alien2->alive){
                     if(alien1->type==0){
@@ -114,8 +116,19 @@ void detecterCollisions(Alien *listeAliens) {
     }
 }
 
+void itemGenerer(SDL_Renderer* renderer, int x, int y, int size, SDL_Color fillColor, SDL_Color borderColor) {
+    // Dessiner le carré rempli avec la couleur de fond
+    SDL_SetRenderDrawColor(renderer, fillColor.r, fillColor.g, fillColor.b, fillColor.a);
+    SDL_Rect squareRect = {x, y, size, size};
+    SDL_RenderFillRect(renderer, &squareRect);
+
+    // Dessiner les contours du carré avec la couleur de la bordure
+    SDL_SetRenderDrawColor(renderer, borderColor.r, borderColor.g, borderColor.b, borderColor.a);
+    SDL_RenderDrawRect(renderer, &squareRect);
+}
+
 void dessinerAlien(const Alien *alien) {
-    if(alien->alive==0){
+    if(alien->alive==0 || alien->age>=500){
             SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
     } else {
         if(alien->type==0){

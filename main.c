@@ -2,6 +2,8 @@
 #include "alien.h"
 #include <time.h>
 
+#define MAX_ALIENS 20
+
 int main(int argc, char *argv[]) {
     
     srand(time(NULL));
@@ -68,9 +70,19 @@ int main(int argc, char *argv[]) {
             Alien *courant = listeAliens;
             tempsint++;
 
-            if (tempsint > 500){
-                ajouterAlien(&listeAliens, &numberOfAliens);
-                tempsint = 0;
+            // SDL_Color fillColor = {0, 0, 0, 0};
+            // SDL_Color borderColor = {255, 255, 255, 255};
+
+            // int rng_x = rand() % 400;
+            // int rng_y = rand() % 400;
+
+            // itemGenerer(renderer, rng_x, rng_y, 15, fillColor, borderColor);
+
+            if (numberOfAliens < MAX_ALIENS) {
+                if (tempsint > 100){
+                    ajouterAlien(&listeAliens, &numberOfAliens);
+                    tempsint = 0;
+                }
             }
 
             while (courant != NULL) {
