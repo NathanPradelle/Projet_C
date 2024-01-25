@@ -3,6 +3,7 @@
 #include <time.h>
 
 int main(int argc, char *argv[]) {
+    
     srand(time(NULL));
     int delay = 0;
     int result = initSDL_main(argc, argv);
@@ -16,6 +17,7 @@ int main(int argc, char *argv[]) {
     Alien *courant = NULL;
 
     SDL_Event event;
+    int menuActif = 0;
     int continuer = 1;
 
     ajouterAlien(&listeAliens, &numberOfAliens);
@@ -23,36 +25,53 @@ int main(int argc, char *argv[]) {
 
     while (continuer) {
         while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_QUIT) {
-                continuer = 0;
+            switch (event.type) {
+                case SDL_QUIT:
+                    continuer = 0;
+                    break;
+                case SDL_MOUSEMOTION:
+                    break;
+                case SDL_KEYDOWN:
+                    if (event.key.keysym.sym == SDLK_ESCAPE) {
+                    menuActif = !menuActif;}
+                    break;
             }
         }
-
-        Alien *courant = listeAliens;
-        Uint32 tempsEcoule = SDL_GetTicks();
-        int tempsint = (int)tempsEcoule;
-
-        if (tempsint % 1000 == 0){
-            ajouterAlien(&listeAliens, &numberOfAliens);
-        }
-
         
-        while (courant != NULL) {
-            deplacerAlien(courant);
-            courant = courant->next;
+        if (!menuActif) {
+
+            Alien *courant = listeAliens;
+            Uint32 tempsEcoule = SDL_GetTicks();
+            int tempsint = (int)tempsEcoule;
+
+            if (tempsint % 1000 == 0){
+                ajouterAlien(&listeAliens, &numberOfAliens);
+            }
+
+            
+            while (courant != NULL) {
+                deplacerAlien(courant);
+                courant = courant->next;
+            }
+
+            effacerFenetre();
+
+            courant = listeAliens;
+
+            while (courant != NULL) {
+                dessinerAlien(courant);
+                courant = courant->next;
+            }
+            
+            mettreAJourAffichage();
+            SDL_Delay(delay);
         }
 
-        effacerFenetre();
+        else {
+            
+            mettreAJourAffichageMenu();
 
-        courant = listeAliens;
-
-        while (courant != NULL) {
-            dessinerAlien(courant);
-            courant = courant->next;
         }
-        
-        mettreAJourAffichage();
-        SDL_Delay(delay);
     }
 
     courant = listeAliens;

@@ -8,8 +8,8 @@ Alien *creerAlien(int *numberOfAliens) {
     Alien *nouvelAlien = (Alien *)malloc(sizeof(Alien));
     if (nouvelAlien != NULL) {
         nouvelAlien->id = *numberOfAliens;
-        nouvelAlien->x = rand() % screenWidth;
-        nouvelAlien->y = rand() % screenHeight;
+        nouvelAlien->x = rand() % (screenWidth - alienWidth);
+        nouvelAlien->y = rand() % (screenHeight - alienHeight);
         nouvelAlien->next = NULL;
     }
     return nouvelAlien;
