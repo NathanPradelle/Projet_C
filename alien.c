@@ -118,3 +118,11 @@ void ajouterAlienDepuisFichier(Alien **liste, int *numberOfAliens, long id, int 
         }
     }
 }
+
+void viderListeAliens(Alien **listeAliens) {
+    while (*listeAliens != NULL) {
+        Alien *suivant = (*listeAliens)->next;
+        free(*listeAliens);  // Libérer la mémoire de l'élément actuel
+        *listeAliens = suivant;
+    }
+}
