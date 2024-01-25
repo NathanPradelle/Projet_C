@@ -2,8 +2,10 @@
 
 SDL_Renderer *renderer = NULL;
 SDL_Window *fenetre = NULL;
+int screenWidth, screenHeight;
+int alienWidth, alienHeight;
 
-int windowsConfig(int * screenWidth, int * screenHeight) {
+int windowsConfig(int * screenWidth, int * screenHeight, int * alienWidth, int * alienHeight) {
     FILE *configFile = fopen("config.txt", "r");
     if (configFile == NULL) {
         perror("Impossible d'ouvrir le fichier de configuration");
@@ -12,14 +14,15 @@ int windowsConfig(int * screenWidth, int * screenHeight) {
 
     fscanf(configFile, "SCREEN_WIDTH=%d \n", screenWidth);
     fscanf(configFile, "SCREEN_HEIGHT=%d \n", screenHeight);
+    fscanf(configFile, "ALIEN_WIDTH=%d \n", alienWidth);
+    fscanf(configFile, "ALIEN_HEIGHT=%d \n", alienHeight);
 
     fclose(configFile);
     return 0;
 }
 
 void initSDL() {
-    int screenWidth, screenHeight;
-    windowsConfig(&screenWidth, &screenHeight);
+    windowsConfig(&screenWidth, &screenHeight, &alienWidth, &alienHeight);
 
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 
@@ -62,6 +65,6 @@ void mettreAJourAffichage() {
 
 void dessinerAlien(const Alien *alien) {
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-    SDL_Rect rectangle = {alien->x, alien->y, 15, 15};
+    SDL_Rect rectangle = {alien->x, alien->y, alienWidth, alienHeight};
     SDL_RenderFillRect(renderer, &rectangle);
 }

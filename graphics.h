@@ -7,6 +7,10 @@
 extern SDL_Renderer *renderer;
 extern SDL_Window *fenetre;
 extern Alien *listeAliens;
+extern int screenWidth;
+extern int screenHeight;
+extern int alienWidth;
+extern int alienHeight;
 
 void initSDL();
 int initSDL_main(int argc, char *argv[]);

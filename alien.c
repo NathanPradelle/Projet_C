@@ -1,4 +1,5 @@
 #include "alien.h"
+#include "graphics.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -7,8 +8,8 @@ Alien *creerAlien(int *numberOfAliens) {
     Alien *nouvelAlien = (Alien *)malloc(sizeof(Alien));
     if (nouvelAlien != NULL) {
         nouvelAlien->id = *numberOfAliens;
-        nouvelAlien->x = rand() % 1600;
-        nouvelAlien->y = rand() % 900;
+        nouvelAlien->x = rand() % screenWidth;
+        nouvelAlien->y = rand() % screenHeight;
         nouvelAlien->next = NULL;
     }
     return nouvelAlien;
@@ -19,27 +20,27 @@ void detruireAlien(Alien *alien) {
 }
 
 void deplacerAlien(Alien *alien) {
-    int direction = rand() % 4; /
+    int direction = rand() % 4;
 
     switch (direction) {
         case 0:
-            if (alien->y > 15) {
-                alien->y -= 15;
+            if (alien->y > alienHeight) {
+                alien->y -= 1;
             }
             break;
         case 1:
-            if (alien->y < 885) {  
-                alien->y += 15;
+            if (alien->y < screenHeight - alienHeight) {  
+                alien->y += 1;
             }
             break;
         case 2:
-            if (alien->x > 15) {
-                alien->x -= 15;
+            if (alien->x > alienWidth) {
+                alien->x -= 1;
             }
             break;
         case 3:
-            if (alien->x < 1585) {  
-                alien->x += 15;
+            if (alien->x < screenWidth - alienWidth) {  
+                alien->x += 1;
             }
             break;
     }
