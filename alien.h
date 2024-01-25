@@ -8,9 +8,9 @@ typedef struct Alien {
     struct Alien *next;
 } Alien;
 
-Alien *creerAlien(Alien **liste);
+Alien *creerAlien(int *numberOfAliens);
 void detruireAlien(Alien *alien);
 void deplacerAlien(Alien *alien);
-void ajouterAlien(Alien **liste);
+void ajouterAlien(Alien **liste, int *numberOfAliens);
 
 #endif

@@ -1,7 +1,10 @@
 #include "graphics.h"
 #include "alien.h"
+#include <time.h>
 
 int main(int argc, char *argv[]) {
+    srand(time(NULL));
+
     int result = initSDL_main(argc, argv);
 
     if (result != 0) {
@@ -9,6 +12,7 @@ int main(int argc, char *argv[]) {
     }
 
     Alien *listeAliens = NULL;
+    int numberOfAliens = 0;
     Alien *courant = NULL;
 
     SDL_Event event;
@@ -21,10 +25,9 @@ int main(int argc, char *argv[]) {
             }
         }
 
-        ajouterAlien(&listeAliens);
-    
-
         Alien *courant = listeAliens;
+
+        ajouterAlien(&listeAliens, &numberOfAliens);
 
         while (courant != NULL) {
             deplacerAlien(courant);
