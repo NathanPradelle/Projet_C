@@ -52,7 +52,7 @@ void detruireAlien(Alien *alien) {
 }
 
 void deplacerAlien(Alien *alien) {
-    int direction = rand() % 4;
+    int direction = rand() % 5;
 
     alien->age++;
     alien->time++;
@@ -60,22 +60,22 @@ void deplacerAlien(Alien *alien) {
     if (alien->time * alien->speed > 100) {
         switch (direction) {
             case 0:
-                if (alien->y > alien->height) {
+                if (alien->y > alien->height + alien->travelDistance) {
                     alien->y -= alien->travelDistance;
                 }
                 break;
             case 1:
-                if (alien->y < screenHeight - alien->height) {  
+                if (alien->y < screenHeight - alien->height - alien->travelDistance) {  
                     alien->y += alien->travelDistance;
                 }
                 break;
             case 2:
-                if (alien->x > alien->width) {
+                if (alien->x > alien->width + alien->travelDistance) {
                     alien->x -= alien->travelDistance;
                 }
                 break;
             case 3:
-                if (alien->x < screenWidth - alien->width) {  
+                if (alien->x < screenWidth - alien->width - alien->travelDistance) {  
                     alien->x += alien->travelDistance;
                 }
                 break;
@@ -88,6 +88,25 @@ void deplacerAlien(Alien *alien) {
 void ajouterAlien(Alien **liste, int *numberOfAliens) {
     Alien *nouvelAlien = creerAlien(numberOfAliens);
     if (nouvelAlien != NULL) {
+        if (*liste == NULL) {
+            *liste = nouvelAlien;
+        } else {
+            Alien *courant = *liste;
+            while (courant->next != NULL) {
+                courant = courant->next;
+            }
+            courant->next = nouvelAlien;
+        }
+    }
+}
+
+void ajouterAlienDepuisFichier(Alien **liste, int *numberOfAliens, long id, int x, int y) {
+    Alien *nouvelAlien = creerAlien(numberOfAliens);
+    if (nouvelAlien != NULL) {
+        nouvelAlien->id = id;
+        nouvelAlien->x = x;
+        nouvelAlien->y = y;
+
         if (*liste == NULL) {
             *liste = nouvelAlien;
         } else {
