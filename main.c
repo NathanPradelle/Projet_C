@@ -2,6 +2,8 @@
 #include "alien.h"
 #include <time.h>
 
+#define MAX_ALIENS 20
+
 int main(int argc, char *argv[]) {
     srand(time(NULL));
     int delay = 100;
@@ -30,10 +32,21 @@ int main(int argc, char *argv[]) {
         Uint32 tempsEcoule = SDL_GetTicks();
         int tempsint = (int)tempsEcoule;
 
-        if (tempsint % 1000 < delay){
-            ajouterAlien(&listeAliens, &numberOfAliens);
+        if (numberOfAliens < MAX_ALIENS) {
+                if (tempsint % 1000 < delay){
+                    ajouterAlien(&listeAliens, &numberOfAliens);
+                }
         }
 
+        SDL_Color fillColor = {0, 0, 0, 0};
+        SDL_Color borderColor = {255, 255, 255, 255};
+
+        int rng_x = rand() % 400;
+        int rng_y = rand() % 400;
+
+        itemGenerer(renderer, rng_x, rng_y, 15, fillColor, borderColor);
+
+        mettreAJourAffichage();
         
         while (courant != NULL) {
             deplacerAlien(courant);
@@ -49,7 +62,6 @@ int main(int argc, char *argv[]) {
             courant = courant->next;
         }
 
-        
         detecterCollisions(listeAliens);
 
         mettreAJourAffichage();

@@ -3,6 +3,8 @@
 SDL_Renderer *renderer = NULL;
 SDL_Window *fenetre = NULL;
 
+
+
 int windowsConfig(int * screenWidth, int * screenHeight) {
     FILE *configFile = fopen("config.txt", "r");
     if (configFile == NULL) {
@@ -104,8 +106,19 @@ void detecterCollisions(Alien *listeAliens) {
     }
 }
 
+void itemGenerer(SDL_Renderer* renderer, int x, int y, int size, SDL_Color fillColor, SDL_Color borderColor) {
+    // Dessiner le carré rempli avec la couleur de fond
+    SDL_SetRenderDrawColor(renderer, fillColor.r, fillColor.g, fillColor.b, fillColor.a);
+    SDL_Rect squareRect = {x, y, size, size};
+    SDL_RenderFillRect(renderer, &squareRect);
+
+    // Dessiner les contours du carré avec la couleur de la bordure
+    SDL_SetRenderDrawColor(renderer, borderColor.r, borderColor.g, borderColor.b, borderColor.a);
+    SDL_RenderDrawRect(renderer, &squareRect);
+}
+
 void dessinerAlien(const Alien *alien) {
-    if(alien->alive==0){
+    if(alien->alive==0 || alien->day>=200){
             SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
     } else {
         if(alien->type==0){

@@ -14,6 +14,7 @@ void cleanupSDL();
 void effacerFenetre();
 void mettreAJourAffichage();
 void detecterCollisions(Alien *listeAliens);
+void itemGenerer(SDL_Renderer* renderer, int x, int y, int size, SDL_Color fillColor, SDL_Color borderColor);
 void dessinerAlien(const Alien *alien);
 
 #endif

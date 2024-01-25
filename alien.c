@@ -27,7 +27,7 @@ void deplacerAlien(Alien *alien) {
 
     alien->day++;
 
-    int direction = rand() % 4;
+    int direction = rand() % 5;
     switch (direction) {
         case 0:
             if (alien->y > 15) {
