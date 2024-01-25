@@ -3,13 +3,30 @@
 SDL_Renderer *renderer = NULL;
 SDL_Window *fenetre = NULL;
 
+int windowsConfig(int * screenWidth, int * screenHeight) {
+    FILE *configFile = fopen("config.txt", "r");
+    if (configFile == NULL) {
+        perror("Impossible d'ouvrir le fichier de configuration");
+        return 1;
+    }
+
+    fscanf(configFile, "SCREEN_WIDTH=%d \n", screenWidth);
+    fscanf(configFile, "SCREEN_HEIGHT=%d \n", screenHeight);
+
+    fclose(configFile);
+    return 0;
+}
+
 void initSDL() {
+    int screenWidth, screenHeight;
+    windowsConfig(&screenWidth, &screenHeight);
+
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 
         exit(1);
     }
 
-    fenetre = SDL_CreateWindow("Ma fenêtre", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1600, 900, SDL_WINDOW_SHOWN);
+    fenetre = SDL_CreateWindow("Ma fenêtre", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, screenWidth, screenHeight, SDL_WINDOW_SHOWN);
     if (fenetre == NULL) {
         SDL_Quit();
         exit(1);
