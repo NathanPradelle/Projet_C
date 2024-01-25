@@ -23,6 +23,6 @@ void effacerFenetre();
 void mettreAJourAffichage();
 void dessinerAlien(const Alien *alien);
 void mettreAJourAffichageMenu();
-void dessinerTexte(const char *texte, int x, int y, int taillePolice);
+// void dessinerTexte(const char *texte, int x, int y, int taillePolice);
 
 #endif

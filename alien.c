@@ -56,22 +56,22 @@ void deplacerAlien(Alien *alien) {
     if (alien->time * alien->speed > 100) {
         switch (direction) {
             case 0:
-                if (alien->y > 15) {
+                if (alien->y > alien->height) {
                     alien->y -= alien->travelDistance;
                 }
                 break;
             case 1:
-                if (alien->y < 885) {  
+                if (alien->y < screenHeight - alien->height) {  
                     alien->y += alien->travelDistance;
                 }
                 break;
             case 2:
-                if (alien->x > 15) {
+                if (alien->x > alien->width) {
                     alien->x -= alien->travelDistance;
                 }
                 break;
             case 3:
-                if (alien->x < 1585) {  
+                if (alien->x < screenWidth - alien->width) {  
                     alien->x += alien->travelDistance;
                 }
                 break;

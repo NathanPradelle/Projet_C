@@ -43,6 +43,16 @@ int main(int argc, char *argv[]) {
             Alien *courant = listeAliens;
             tempsint++;
 
+            if (tempsint > 500){
+                ajouterAlien(&listeAliens, &numberOfAliens);
+                tempsint = 0;
+            }
+
+            while (courant != NULL) {
+                deplacerAlien(courant);
+                courant = courant->next;
+            }
+
             courant = listeAliens;
 
             while (courant != NULL) {

@@ -85,54 +85,52 @@ void mettreAJourAffichageMenu() {
     // Bouton "Continue"
     SDL_Rect rectContinue = {xBouton, yBouton, largeurBouton, hauteurBouton};
     SDL_RenderFillRect(renderer, &rectContinue);
-    dessinerTexte("Continue", xBouton + 20, yBouton + 10, 20);
+    // dessinerTexte("Continue", xBouton + 20, yBouton + 10, 20);
 
     // Bouton "Quit"
     SDL_Rect rectQuit = {xBouton, yBouton + hauteurBouton + espacementBouton, largeurBouton, hauteurBouton};
     SDL_RenderFillRect(renderer, &rectQuit);
-    dessinerTexte("Quit", xBouton + 20, yBouton + hauteurBouton + espacementBouton + 10, 20);
+    // dessinerTexte("Quit", xBouton + 20, yBouton + hauteurBouton + espacementBouton + 10, 20);
 
     // Bouton "Sauvegarder"
     SDL_Rect rectSauvegarder = {xBouton, yBouton + 2 * (hauteurBouton + espacementBouton), largeurBouton, hauteurBouton};
     SDL_RenderFillRect(renderer, &rectSauvegarder);
-    dessinerTexte("Sauvegarder", xBouton + 20, yBouton + 2 * (hauteurBouton + espacementBouton) + 10, 20);
+    // dessinerTexte("Sauvegarder", xBouton + 20, yBouton + 2 * (hauteurBouton + espacementBouton) + 10, 20);
 
     SDL_RenderPresent(renderer);
 }
 
 
-void dessinerTexte(const char *texte, int x, int y, int taillePolice) {
+// void dessinerTexte(const char *texte, int x, int y, int taillePolice) {
+//     TTF_Font *police = TTF_OpenFont("vendor/font/Alien_Moon.ttf", taillePolice);
+//     if (police == NULL) {
+//         fprintf(stderr, "Erreur lors du chargement de la police : %s\n", TTF_GetError());
+//         return;
+//     }
 
-    
-    TTF_Font *police = TTF_OpenFont("vendor/font/Alien_Moon.ttf", taillePolice);
-    if (police == NULL) {
-        fprintf(stderr, "Erreur lors du chargement de la police : %s\n", TTF_GetError());
-        return;
-    }
+//     SDL_Color couleurTexte = {0, 0, 0, 255}; // Couleur du texte en noir
+//     SDL_Surface *surfaceTexte = TTF_RenderText_Solid(police, texte, couleurTexte);
+//     if (surfaceTexte == NULL) {
+//         fprintf(stderr, "Erreur lors de la création de la surface texte : %s\n", TTF_GetError());
+//         TTF_CloseFont(police);
+//         return;
+//     }
 
-    SDL_Color couleurTexte = {0, 0, 0, 255}; // Couleur du texte en noir
-    SDL_Surface *surfaceTexte = TTF_RenderText_Solid(police, texte, couleurTexte);
-    if (surfaceTexte == NULL) {
-        fprintf(stderr, "Erreur lors de la création de la surface texte : %s\n", TTF_GetError());
-        TTF_CloseFont(police);
-        return;
-    }
-
-    SDL_Texture *textureTexte = SDL_CreateTextureFromSurface(renderer, surfaceTexte);
-    if (textureTexte == NULL) {
-        fprintf(stderr, "Erreur lors de la création de la texture texte : %s\n", SDL_GetError());
-        SDL_FreeSurface(surfaceTexte);
-        TTF_CloseFont(police);
-        return;
-    }
+//     SDL_Texture *textureTexte = SDL_CreateTextureFromSurface(renderer, surfaceTexte);
+//     if (textureTexte == NULL) {
+//         fprintf(stderr, "Erreur lors de la création de la texture texte : %s\n", SDL_GetError());
+//         SDL_FreeSurface(surfaceTexte);
+//         TTF_CloseFont(police);
+//         return;
+//     }
     
     
-    SDL_Rect destRect = {x, y, surfaceTexte->w, surfaceTexte->h};
-    SDL_RenderCopy(renderer, textureTexte, NULL, &destRect);
+//     SDL_Rect destRect = {x, y, surfaceTexte->w, surfaceTexte->h};
+//     SDL_RenderCopy(renderer, textureTexte, NULL, &destRect);
 
-    SDL_DestroyTexture(textureTexte);
-    SDL_FreeSurface(surfaceTexte);
-    TTF_CloseFont(police);
+//     SDL_DestroyTexture(textureTexte);
+//     SDL_FreeSurface(surfaceTexte);
+//     TTF_CloseFont(police);
 
     
-}
+// }
