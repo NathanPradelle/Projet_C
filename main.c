@@ -60,6 +60,13 @@ int main(int argc, char *argv[]) {
                 courant = courant->next;
             }
             
+            detecterCollisions(listeAliens);
+
+            while (courant != NULL) {
+                Alien *suivant = courant->next;
+                detruireAlien(courant);
+                courant = suivant;
+            }
             mettreAJourAffichage();
             SDL_Delay(delay);
         } else {
@@ -73,7 +80,7 @@ int main(int argc, char *argv[]) {
             Alien *suivant = courant->next;
             detruireAlien(courant);
             courant = suivant;
-    }
+        }
 
     cleanupSDL();
 

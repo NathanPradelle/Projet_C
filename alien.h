@@ -3,6 +3,7 @@
 
 typedef struct Alien {
     long id;
+    int alive;
     int health;
     int x;
     int y;
@@ -14,6 +15,7 @@ typedef struct Alien {
     int satiety;
     int eatDamage;
     int time;
+    int type;
     struct Race *race;
     struct Alien *next;
 } Alien;

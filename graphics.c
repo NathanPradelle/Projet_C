@@ -63,8 +63,64 @@ void mettreAJourAffichage() {
     SDL_RenderPresent(renderer);
 }
 
+void detecterCollisions(Alien *listeAliens) {
+    Alien *alien1 = listeAliens;
+
+    while (alien1 != NULL) {
+        Alien *alien2 = alien1->next;
+
+        while (alien2 != NULL) {
+            if (alien1->x < alien2->x + 15 &&
+                alien1->x + 15 > alien2->x &&
+                alien1->y < alien2->y + 15 &&
+                alien1->y + 15 > alien2->y) {
+                // printf("Collision détectée entre deux aliens!\n");
+                if(alien1->type!=alien2->type && alien1->alive && alien2->alive){
+                    if(alien1->type==0){
+                        if(alien2->type==1){
+                            alien1->alive=0;
+                        } else {
+                            alien2->alive=0;
+                        }
+                    }
+                    if(alien1->type==1){
+                        if(alien2==0){
+                            alien2->alive=0;
+                        } else {
+                            alien1->alive=0;
+                        }
+                    }
+                    if(alien1->type==2){
+                        if(alien2->type==0){
+                            alien1->alive=0;
+                        } else {
+                            alien2->alive=0;
+                        }
+                    }
+                }
+            }
+
+            alien2 = alien2->next;
+        }
+
+        alien1 = alien1->next;
+    }
+}
+
 void dessinerAlien(const Alien *alien) {
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    if(alien->alive==0){
+            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+    } else {
+        if(alien->type==0){
+            SDL_SetRenderDrawColor(renderer, 255, 255-alien->age, 255-alien->age, 255-alien->age);
+        }
+        if(alien->type==1){
+            SDL_SetRenderDrawColor(renderer, 255-alien->age, 255, 255-alien->age, 255-alien->age);
+        }
+        if(alien->type==2){
+            SDL_SetRenderDrawColor(renderer, 255-alien->age, 255-alien->age, 255, 255-alien->age);
+        }
+    }
     SDL_Rect rectangle = {alien->x, alien->y, alien->width, alien->height};
     SDL_RenderFillRect(renderer, &rectangle);
 }
