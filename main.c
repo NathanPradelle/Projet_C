@@ -48,9 +48,21 @@ int main(int argc, char *argv[]) {
             dessinerAlien(courant);
             courant = courant->next;
         }
+
         
+        detecterCollisions(listeAliens);
+
         mettreAJourAffichage();
         SDL_Delay(delay);
+
+        while (courant != NULL) {
+            Alien *suivant = courant->next;
+            detruireAlien(courant);
+            courant = suivant;
+        }
+
+
+
     }
 
     courant = listeAliens;
@@ -59,7 +71,7 @@ int main(int argc, char *argv[]) {
             Alien *suivant = courant->next;
             detruireAlien(courant);
             courant = suivant;
-    }
+        }
 
     cleanupSDL();
 

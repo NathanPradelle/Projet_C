@@ -2,9 +2,12 @@
 #define ALIEN_H
 
 typedef struct Alien {
+    int alive;
     int id;
     int x;
     int y;
+    int day;
+    int type;
     struct Alien *next;
 } Alien;
 

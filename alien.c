@@ -6,9 +6,12 @@ Alien *creerAlien(int *numberOfAliens) {
     ++*numberOfAliens;
     Alien *nouvelAlien = (Alien *)malloc(sizeof(Alien));
     if (nouvelAlien != NULL) {
+        nouvelAlien->alive=1;
         nouvelAlien->id = *numberOfAliens;
-        nouvelAlien->x = rand() % 1600;
-        nouvelAlien->y = rand() % 900;
+        nouvelAlien->x = rand() % 400;
+        nouvelAlien->y = rand() % 400;
+        nouvelAlien->day = 0;
+        nouvelAlien->type = rand() % 3;
         nouvelAlien->next = NULL;
     }
     return nouvelAlien;
@@ -18,9 +21,13 @@ void detruireAlien(Alien *alien) {
     free(alien);
 }
 
-void deplacerAlien(Alien *alien) {
-    int direction = rand() % 4; /
 
+
+void deplacerAlien(Alien *alien) {
+
+    alien->day++;
+
+    int direction = rand() % 4;
     switch (direction) {
         case 0:
             if (alien->y > 15) {
@@ -28,7 +35,7 @@ void deplacerAlien(Alien *alien) {
             }
             break;
         case 1:
-            if (alien->y < 885) {  
+            if (alien->y < 400-15) {  
                 alien->y += 15;
             }
             break;
@@ -38,7 +45,7 @@ void deplacerAlien(Alien *alien) {
             }
             break;
         case 3:
-            if (alien->x < 1585) {  
+            if (alien->x < 400-15) {  
                 alien->x += 15;
             }
             break;

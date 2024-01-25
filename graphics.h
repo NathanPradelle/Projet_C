@@ -13,6 +13,7 @@ int initSDL_main(int argc, char *argv[]);
 void cleanupSDL();
 void effacerFenetre();
 void mettreAJourAffichage();
+void detecterCollisions(Alien *listeAliens);
 void dessinerAlien(const Alien *alien);
 
 #endif
