@@ -1,13 +1,15 @@
 #include "alien.h"
+#include <stdio.h>
 #include <stdlib.h>
 
-Alien *creerAlien(Alien **liste) {
+Alien *creerAlien(int *numberOfAliens) {
+    ++*numberOfAliens;
     Alien *nouvelAlien = (Alien *)malloc(sizeof(Alien));
     if (nouvelAlien != NULL) {
-        nouvelAlien->id = rand();
+        nouvelAlien->id = *numberOfAliens;
         nouvelAlien->x = rand() % 1600;
         nouvelAlien->y = rand() % 900;
-        nouvelAlien->next = *liste;
+        nouvelAlien->next = NULL;
     }
     return nouvelAlien;
 }
@@ -43,8 +45,9 @@ void deplacerAlien(Alien *alien) {
     }
 }
 
-void ajouterAlien(Alien **liste) {
-    Alien *nouvelAlien = creerAlien(liste);
+
+void ajouterAlien(Alien **liste, int *numberOfAliens) {
+    Alien *nouvelAlien = creerAlien(numberOfAliens);
     if (nouvelAlien != NULL) {
         if (*liste == NULL) {
             *liste = nouvelAlien;
