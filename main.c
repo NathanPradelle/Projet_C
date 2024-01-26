@@ -140,7 +140,7 @@ ProgramState runMenu() {
                             sauvegardeActif = !sauvegardeActif;
                         }
                         if (selectedOption == 4) {
-                            running = 0;
+                            return QUIT;
                         }
                         break;
                 }
@@ -168,7 +168,6 @@ ProgramState runMenu() {
                 if(!chargerListeDepuisFichier("sauvegarde_1.txt", &listeAliens, &numberOfAliens)){
                     fprintf(stderr, "Erreur lors du chargement du fichier\n");
                 } else {
-                free(fichier_actuel);
                 fichier_actuel = "sauvegarde_1.txt";
                 return SIMULATION;
                 }
@@ -178,7 +177,6 @@ ProgramState runMenu() {
                 if(!chargerListeDepuisFichier("sauvegarde_2.txt", &listeAliens, &numberOfAliens)){
                     fprintf(stderr, "Erreur lors du chargement du fichier\n");
                 } else {
-                free(fichier_actuel);
                 fichier_actuel = "sauvegarde_2.txt";
                 return SIMULATION;
                 }
@@ -188,7 +186,6 @@ ProgramState runMenu() {
                 if(!chargerListeDepuisFichier("sauvegarde_3.txt", &listeAliens, &numberOfAliens)){
                     fprintf(stderr, "Erreur lors du chargement du fichier\n");
                 } else {
-                free(fichier_actuel);
                 fichier_actuel = "sauvegarde_3.txt";
                 return SIMULATION;
                 }
