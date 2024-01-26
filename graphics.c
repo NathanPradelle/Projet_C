@@ -125,19 +125,16 @@ void itemGenerer(SDL_Renderer* renderer, int x, int y, int size, SDL_Color fillC
 }
 
 void dessinerAlien(Alien *alien) {
-    if(alien->alive == 0 || alien->age >= alien->lifespan){
-            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
-    } else {
-        if(alien->type==0){
-            SDL_SetRenderDrawColor(renderer, 255 - alien->age * 220/alien->lifespan, 0, 0, 255-alien->age);
-        }
-        if(alien->type==1){
-            SDL_SetRenderDrawColor(renderer, 0, 255 - alien->age * 220/alien->lifespan, 0, 255-alien->age);
-        }
-        if(alien->type==2){
-            SDL_SetRenderDrawColor(renderer, 0, 0, 255 - alien->age * 220/alien->lifespan, 255-alien->age);
-        }
+    if(alien->type==0){
+        SDL_SetRenderDrawColor(renderer, 255 - alien->age * 220/alien->lifespan, 0, 0, 255-alien->age);
     }
+    if(alien->type==1){
+        SDL_SetRenderDrawColor(renderer, 0, 255 - alien->age * 220/alien->lifespan, 0, 255-alien->age);
+    }
+    if(alien->type==2){
+        SDL_SetRenderDrawColor(renderer, 0, 0, 255 - alien->age * 220/alien->lifespan, 255-alien->age);
+    }
+
     SDL_Rect rectangle = {alien->x, alien->y, alien->width, alien->height};
     SDL_RenderFillRect(renderer, &rectangle);
 }

@@ -38,5 +38,6 @@ void deplacerAlien(Alien *alien);
 void ajouterAlien(Alien **liste, int *numberOfAliens);
 void ajouterAlienDepuisFichier(Alien **liste, int *numberOfAliens, long id, int x, int y);
 void viderListeAliens(Alien **listeAliens);
+void supprimerAlien(Alien **listeAliens, Alien *alien);
 
 #endif

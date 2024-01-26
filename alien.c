@@ -66,6 +66,27 @@ void ajouterAlien(Alien **liste, int *numberOfAliens) {
     }
 }
 
+void supprimerAlien(Alien **listeAliens, Alien *alien) {
+    Alien *courant = *listeAliens;
+    Alien *precedent = NULL;
+
+    // Recherche de l'alien dans la liste
+    while (courant != NULL && courant != alien) {
+        precedent = courant;
+        courant = courant->next;
+    }
+
+    if (precedent == NULL) {
+        // L'alien à supprimer est en tête de liste
+        *listeAliens = courant->next;
+    } else {
+        // L'alien à supprimer n'est pas en tête de liste
+        precedent->next = courant->next;
+    }
+
+    free(courant);
+}
+
 void detruireAlien(Alien *alien) {
     free(alien);
 }

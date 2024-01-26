@@ -205,7 +205,6 @@ ProgramState runSimulation() {
     globalConfig(&refreshDelay, &maxAliens);
 
     srand(time(NULL));
-    int delay = 0;
     
     int xBouton = (screenWidth - largeurBouton) / 2;
     int yBouton = (screenHeight - (3 * hauteurBouton + 2 * espacementBouton)) / 2;
@@ -221,7 +220,7 @@ ProgramState runSimulation() {
     while (numberOfAliens < maxAliens) {
         ajouterAlien(&listeAliens, &numberOfAliens);
     }
-    
+
     int tempsint = 0;
     while (continuer) {
         while (SDL_PollEvent(&event)) {
@@ -276,14 +275,18 @@ ProgramState runSimulation() {
 
             while (courant != NULL) {
                 dessinerAlien(courant);
+                if (courant->alive <= 0) {
+                    supprimerAlien(&listeAliens, courant);
+                }
                 courant = courant->next;
             }
             
-            while (courant != NULL) {
-                Alien *suivant = courant->next;
-                detruireAlien(courant);
-                courant = suivant;
-            }
+            // while (courant != NULL) {
+            //     Alien *suivant = courant->next;
+            //     detruireAlien(courant);
+            //     courant = suivant;
+            // }
+
             mettreAJourAffichage();
             SDL_Delay(refreshDelay);
         } else {
