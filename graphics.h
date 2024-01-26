@@ -33,7 +33,8 @@ void mettreAJourAffichageMenu();
 void mettreAJourAffichageSauvegarde();
 void dessinerTexte(const char *texte, int x, int y, int taillePolice);
 void actionBoutonSauvegarder(const char *nomFichier, Alien *listeAliens);
-void chargerListeDepuisFichier(const char *nomFichier, Alien **listeAliens, int *numberOfAliens);
+int chargerListeDepuisFichier(const char *nomFichier, Alien **listeAliens, int *numberOfAliens);
 void viderFichier(const char *chemin);
+char *verifVide();
 
 #endif
