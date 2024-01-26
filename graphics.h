@@ -30,8 +30,10 @@ void detecterCollisions(Alien *listeAliens);
 void itemGenerer(SDL_Renderer* renderer, int x, int y, int size, SDL_Color fillColor, SDL_Color borderColor);
 void dessinerAlien(Alien *alien);
 void mettreAJourAffichageMenu();
+void mettreAJourAffichageSauvegarde();
 void dessinerTexte(const char *texte, int x, int y, int taillePolice);
 void actionBoutonSauvegarder(const char *nomFichier, Alien *listeAliens);
 void chargerListeDepuisFichier(const char *nomFichier, Alien **listeAliens, int *numberOfAliens);
+void viderFichier(const char *chemin);
 
 #endif
