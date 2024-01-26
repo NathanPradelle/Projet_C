@@ -38,12 +38,13 @@ int main() {
     ProgramState state = MENU;
 
     while (state != QUIT) {
+        Mix_Music *music;
         switch (state) {
             case MENU:
                 if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
                     printf("Erreur lors de l'initialisation de SDL_mixer: %s\n", Mix_GetError());
                 }
-                Mix_Music *music = Mix_LoadMUS("vendor/music/Program in C.mp3");
+                music = Mix_LoadMUS("vendor/music/Program in C.mp3");
                 if (!music) {
                     printf("Erreur lors du chargement du fichier MP3: %s\n", Mix_GetError());
                     return QUIT;
@@ -59,6 +60,7 @@ int main() {
                 if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
                     printf("Erreur lors de l'initialisation de SDL_mixer: %s\n", Mix_GetError());
                 }
+                music = Mix_LoadMUS("vendor/music/Into_the_Unknown.mp3");
                 if (!music) {
                     printf("Erreur lors du chargement du fichier MP3: %s\n", Mix_GetError());
                     return QUIT;
