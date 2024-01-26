@@ -77,8 +77,9 @@ void mettreAJourAffichage() {
     SDL_RenderPresent(renderer);
 }
 
-void collisionsDamages(Alien *alien1, Alien *alien2) {
+void collisionsDamages(Alien *alien1, Alien *alien2, int *playSound) {
     if(alien1->type!=alien2->type){
+        *playSound = 1;
         if(alien1->type == 0){
             if(alien2->type == 1){
                 alien1->alive=0;
@@ -103,7 +104,8 @@ void collisionsDamages(Alien *alien1, Alien *alien2) {
     }
 }
 
-void detecterCollisions(Alien *listeAliens) {
+int detecterCollisions(Alien *listeAliens) {
+    int playSound = 0;
     Alien *alien1 = listeAliens;
 
     while (alien1 != NULL) {
@@ -114,12 +116,13 @@ void detecterCollisions(Alien *listeAliens) {
             SDL_Rect rectangle2 = {alien2->x, alien2->y, alien2->width, alien2->height};
 
             if (SDL_HasIntersection(&rectangle1, &rectangle2) == SDL_TRUE) {
-                collisionsDamages(alien1, alien2);
+                collisionsDamages(alien1, alien2, &playSound);
             }
             alien2 = alien2->next;
         }
         alien1 = alien1->next;
     }
+    return playSound;
 }
 
 void itemGenerer(SDL_Renderer* renderer, int x, int y, int size, SDL_Color fillColor, SDL_Color borderColor) {
