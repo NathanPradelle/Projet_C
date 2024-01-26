@@ -7,7 +7,10 @@ int screenWidth, screenHeight;
 int largeurBouton = 200;
 int hauteurBouton = 50;
 int espacementBouton = 20;
-int xBouton, yBouton;
+int xBouton;
+int yBouton;
+
+
 
 int windowsConfig(int * screenWidth, int * screenHeight) {
     FILE *configFile = fopen("config.txt", "r");
@@ -57,7 +60,7 @@ int initSDL_main() {
 void cleanupSDL() {
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(fenetre);
-    SDL_Quit();
+    //SDL_Quit();
 }
 
 void effacerFenetre() {
@@ -69,7 +72,8 @@ void mettreAJourAffichage() {
     SDL_RenderPresent(renderer);
 }
 
-void detecterCollisions(Alien *listeAliens) {
+int detecterCollisions(Alien *listeAliens) {
+    int r = 0;
     Alien *alien1 = listeAliens;
 
     while (alien1 != NULL) {
@@ -82,6 +86,7 @@ void detecterCollisions(Alien *listeAliens) {
                 alien1->y + alien1->height > alien2->y) {
                 // printf("Collision détectée entre deux aliens!\n");
                 if(alien1->type!=alien2->type && alien1->alive && alien2->alive){
+                    r=1;
                     if(alien1->type==0){
                         if(alien2->type==1){
                             alien1->alive=0;
@@ -111,6 +116,7 @@ void detecterCollisions(Alien *listeAliens) {
 
         alien1 = alien1->next;
     }
+    return r;
 }
 
 void itemGenerer(SDL_Renderer* renderer, int x, int y, int size, SDL_Color fillColor, SDL_Color borderColor) {
@@ -124,18 +130,18 @@ void itemGenerer(SDL_Renderer* renderer, int x, int y, int size, SDL_Color fillC
     SDL_RenderDrawRect(renderer, &squareRect);
 }
 
-void dessinerAlien(Alien *alien) {
-    if(alien->alive == 0 || alien->age >= alien->lifespan){
+void dessinerAlien(const Alien *alien) {
+    if(alien->alive==0 || alien->age>=150000){
             SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
     } else {
         if(alien->type==0){
-            SDL_SetRenderDrawColor(renderer, 255 - alien->age * 220/alien->lifespan, 0, 0, 255-alien->age);
+            SDL_SetRenderDrawColor(renderer, 255, 255-alien->age, 255-alien->age, 255-alien->age);
         }
         if(alien->type==1){
-            SDL_SetRenderDrawColor(renderer, 0, 255 - alien->age * 220/alien->lifespan, 0, 255-alien->age);
+            SDL_SetRenderDrawColor(renderer, 255-alien->age, 255, 255-alien->age, 255-alien->age);
         }
         if(alien->type==2){
-            SDL_SetRenderDrawColor(renderer, 0, 0, 255 - alien->age * 220/alien->lifespan, 255-alien->age);
+            SDL_SetRenderDrawColor(renderer, 255-alien->age, 255-alien->age, 255, 255-alien->age);
         }
     }
     SDL_Rect rectangle = {alien->x, alien->y, alien->width, alien->height};

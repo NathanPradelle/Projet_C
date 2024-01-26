@@ -8,27 +8,9 @@
 #include "alien.h"
 #include <time.h>
 
+#define MAX_ALIENS 50
+
 #define MENU_SIZE 3
-
-int refreshDelay = 0;
-int maxAliens = 20;
-
-int globalConfig(int *refreshDelay, int *maxAliens) {
-    FILE *configFile = fopen("config.txt", "r");
-    if (configFile == NULL) {
-        perror("Impossible d'ouvrir le fichier de configuration");
-        return 1;
-    }
-
-    char line[150];
-    while (fgets(line, sizeof(line), configFile) != NULL) {
-        sscanf(line, "REFRESH_DELAY=%d", refreshDelay);
-        sscanf(line, "MAX_ALIEN=%d", maxAliens);
-    }
-
-    fclose(configFile);
-    return 0;
-}
 
 int main(int argc, char *argv[]) {
     ProgramState state = MENU;
@@ -36,7 +18,6 @@ int main(int argc, char *argv[]) {
     while (state != QUIT) {
         switch (state) {
             case MENU:
-                state = runMenu();
                 if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
                     printf("Erreur lors de l'initialisation de SDL_mixer: %s\n", Mix_GetError());
                 }
@@ -49,10 +30,11 @@ int main(int argc, char *argv[]) {
                     printf("Erreur lors de la lecture de la musique: %s\n", Mix_GetError());
                     return QUIT;
                 }
+
                 Mix_RewindMusic();
+                state = runMenu();
                 break;
             case SIMULATION:
-                state = runSimulation();
                 if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
                     printf("Erreur lors de l'initialisation de SDL_mixer: %s\n", Mix_GetError());
                 }
@@ -64,6 +46,8 @@ int main(int argc, char *argv[]) {
                     printf("Erreur lors de la lecture de la musique: %s\n", Mix_GetError());
                     return QUIT;
                 }
+                Mix_RewindMusic();
+                state = runSimulation();
                 break;
             case QUIT:
                 state = QUIT;
@@ -116,6 +100,16 @@ ProgramState runMenu() {
             if (event.type == SDL_QUIT) {
                 running = 0;
             } else if (event.type == SDL_KEYDOWN) {
+                Mix_Chunk* ha = Mix_LoadWAV("music/Denis-Brogniart-AH.mp3");
+                if (!ha) {
+                    printf("Erreur lors du chargement du bruitage: %s\n", Mix_GetError());
+                    return 1;
+                }
+                int channel = Mix_PlayChannel(-1, ha, 0); // -1 pour choisir un canal disponible, 0 pour jouer une seule fois
+                if (channel == -1) {
+                    printf("Erreur lors de la lecture du bruitage: %s\n", Mix_GetError());
+                    return 1;
+                }
                 switch (event.key.keysym.sym) {
                     case SDLK_UP:
                         selectedOption = (selectedOption - 1 + MENU_SIZE) % MENU_SIZE;
@@ -160,7 +154,7 @@ ProgramState runMenu() {
             }
 
             if (i == selectedOption) {
-                SDL_SetSurfaceColorMod(optionSurface, 255, 0, 0); // Rouge
+                SDL_SetSurfaceColorMod(optionSurface, 255, 0, 0);
             }
 
             optionTextures[i] = SDL_CreateTextureFromSurface(renderer, optionSurface);
@@ -201,9 +195,7 @@ ProgramState runMenu() {
 }
 
 ProgramState runSimulation() {
-    srand(time(NULL));
-    globalConfig(&refreshDelay, &maxAliens);
-
+    
     srand(time(NULL));
     int delay = 0;
     
@@ -218,53 +210,66 @@ ProgramState runSimulation() {
     int menuActif = 0;
     int continuer = 1;
 
-    while (numberOfAliens < maxAliens) {
-        ajouterAlien(&listeAliens, &numberOfAliens);
-    }
+    ajouterAlien(&listeAliens, &numberOfAliens);
     
     int tempsint = 0;
     while (continuer) {
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
-                continuer = 0;
-            } else if (event.type == SDL_KEYDOWN) {
-                if (event.key.keysym.sym == SDLK_ESCAPE) {
-                    menuActif = !menuActif;
-                }
-            } else if (menuActif && event.type == SDL_MOUSEBUTTONDOWN) {
-                int mouseX = event.button.x;
-                int mouseY = event.button.y;
-
-                if (mouseX >= xBouton && mouseX <= xBouton + largeurBouton &&
-                    mouseY >= yBouton && mouseY <= yBouton + hauteurBouton) {
-                    menuActif = !menuActif; // Désactive le menu
-                }
-
-                // Bouton "Quit"
-                if (mouseX >= xBouton && mouseX <= xBouton + largeurBouton &&
-                    mouseY >= yBouton + hauteurBouton + espacementBouton &&
-                    mouseY <= yBouton + 2 * (hauteurBouton + espacementBouton)) {
-                    continuer = 0; // Quitte l'application
-                }
-
-                if (mouseX >= xBouton && mouseX <= xBouton + largeurBouton &&
-                    mouseY >= yBouton + 2 * (hauteurBouton + espacementBouton) &&
-                    mouseY <= yBouton + 3 * (hauteurBouton + espacementBouton)) {
-                    actionBoutonSauvegarder("sauvegarde_1.txt", listeAliens);
-                }
-
-                if (mouseX >= xBouton && mouseX <= xBouton + largeurBouton &&
-                    mouseY >= yBouton + 3 * (hauteurBouton + espacementBouton) &&
-                    mouseY <= yBouton + 4 * (hauteurBouton + espacementBouton)) {
-                    chargerListeDepuisFichier("sauvegarde_1.txt", &listeAliens, &numberOfAliens);
-                }
+            continuer = 0;
+        } else if (event.type == SDL_KEYDOWN) {
+            if (event.key.keysym.sym == SDLK_ESCAPE) {
+                menuActif = !menuActif;
             }
-        }
+        } else if (menuActif && event.type == SDL_MOUSEBUTTONDOWN) {
+            int mouseX = event.button.x;
+            int mouseY = event.button.y;
 
+            if (mouseX >= xBouton && mouseX <= xBouton + largeurBouton &&
+                mouseY >= yBouton && mouseY <= yBouton + hauteurBouton) {
+                menuActif = !menuActif; // Désactive le menu
+            }
+
+            // Bouton "Quit"
+            if (mouseX >= xBouton && mouseX <= xBouton + largeurBouton &&
+                mouseY >= yBouton + hauteurBouton + espacementBouton &&
+                mouseY <= yBouton + 2 * (hauteurBouton + espacementBouton)) {
+                continuer = 0; // Quitte l'application
+            }
+
+            if (mouseX >= xBouton && mouseX <= xBouton + largeurBouton &&
+                mouseY >= yBouton + 2 * (hauteurBouton + espacementBouton) &&
+                mouseY <= yBouton + 3 * (hauteurBouton + espacementBouton)) {
+                actionBoutonSauvegarder("sauvegarde_1.txt", listeAliens);
+            }
+
+            if (mouseX >= xBouton && mouseX <= xBouton + largeurBouton &&
+                mouseY >= yBouton + 3 * (hauteurBouton + espacementBouton) &&
+                mouseY <= yBouton + 4 * (hauteurBouton + espacementBouton)) {
+                chargerListeDepuisFichier("sauvegarde_1.txt", &listeAliens, &numberOfAliens);
+            }
+
+        }
+        }
         if (!menuActif) {
             effacerFenetre();
             Alien *courant = listeAliens;
             tempsint++;
+
+            // SDL_Color fillColor = {0, 0, 0, 0};
+            // SDL_Color borderColor = {255, 255, 255, 255};
+
+            // int rng_x = rand() % 400;
+            // int rng_y = rand() % 400;
+
+            // itemGenerer(renderer, rng_x, rng_y, 15, fillColor, borderColor);
+
+            if (numberOfAliens < MAX_ALIENS) {
+                if (tempsint > 1000){
+                    ajouterAlien(&listeAliens, &numberOfAliens);
+                    tempsint = 0;
+                }
+            }
 
             while (courant != NULL) {
                 deplacerAlien(courant);
@@ -272,20 +277,32 @@ ProgramState runSimulation() {
             }
 
             courant = listeAliens;
-            detecterCollisions(listeAliens);
 
             while (courant != NULL) {
                 dessinerAlien(courant);
                 courant = courant->next;
             }
             
+            if(detecterCollisions(listeAliens)){
+                Mix_Chunk* listen = Mix_LoadWAV("music/hey_listen.mp3");
+                if (!listen) {
+                    printf("Erreur lors du chargement du bruitage: %s\n", Mix_GetError());
+                    return 1;
+                }
+                int channel = Mix_PlayChannel(-1, listen, 0); // -1 pour choisir un canal disponible, 0 pour jouer une seule fois
+                if (channel == -1) {
+                    printf("Erreur lors de la lecture du bruitage: %s\n", Mix_GetError());
+                    return 1;
+                }
+            };
+
             while (courant != NULL) {
                 Alien *suivant = courant->next;
                 detruireAlien(courant);
                 courant = suivant;
             }
             mettreAJourAffichage();
-            SDL_Delay(refreshDelay);
+            SDL_Delay(delay);
         } else {
             mettreAJourAffichageMenu(xBouton, yBouton);
         }
