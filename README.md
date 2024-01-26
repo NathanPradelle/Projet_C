@@ -12,19 +12,19 @@ Dans le fichier Makefile, rajoute le nom du fichier dans la ligne avec SRCS
 Attention, ne pas modifier la tabulation du fichier
 
 ## Options configurables dans le config.txt (Toutes en int)
-# global settings
-REFRESH_DELAY
-MAX_ALIEN
+#### global settings
+REFRESH_DELAY  
+MAX_ALIEN  
 
-# graphic config
-SCREEN_WIDTH
-SCREEN_HEIGHT
-AGING_RENDER // MAX 255
+#### graphic config
+SCREEN_WIDTH  
+SCREEN_HEIGHT  
+AGING_RENDER // MAX 255  
 
-# alien config
-DEFAULT_SPEED
-DEFAULT_TRAVEL_DISTANCE
-ALIEN_WIDTH
-ALIEN_HEIGHT
-MAX_ALIENS
-ALIEN_LIFESPAN
+#### alien config
+DEFAULT_SPEED  
+DEFAULT_TRAVEL_DISTANCE  
+ALIEN_WIDTH  
+ALIEN_HEIGHT  
+MAX_ALIENS  
+ALIEN_LIFESPAN  
