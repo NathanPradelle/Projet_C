@@ -78,16 +78,8 @@ void mettreAJourAffichage() {
 }
 
 void collisionsDamages(Alien *alien1, Alien *alien2, int *playSound) {
-    if(alien1->type == 0 && alien2->type == 1){
+    if(alien1->type != alien2->type){
         alien1->alive = 0;
-        *playSound = 1;
-    }
-    if(alien1->type == 1 && alien2->type == 2){
-        alien1->alive = 0;
-        *playSound = 1;
-    }
-    if(alien1->type == 2 && alien2->type == 0){
-        alien1->alive=0;
         *playSound = 1;
     }
 }
