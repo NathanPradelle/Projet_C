@@ -78,29 +78,17 @@ void mettreAJourAffichage() {
 }
 
 void collisionsDamages(Alien *alien1, Alien *alien2, int *playSound) {
-    if(alien1->type!=alien2->type){
+    if(alien1->type == 0 && alien2->type == 1){
+        alien1->alive = 0;
         *playSound = 1;
-        if(alien1->type == 0){
-            if(alien2->type == 1){
-                alien1->alive=0;
-            } else {
-                alien2->alive=0;
-            }
-        }
-        if(alien1->type == 1){
-            if(alien2 == 0){
-                alien2->alive=0;
-            } else {
-                alien1->alive=0;
-            }
-        }
-        if(alien1->type == 2){
-            if(alien2->type == 0){
-                alien1->alive=0;
-            } else {
-                alien2->alive=0;
-            }
-        }
+    }
+    if(alien1->type == 1 && alien2->type == 2){
+        alien1->alive = 0;
+        *playSound = 1;
+    }
+    if(alien1->type == 2 && alien2->type == 0){
+        alien1->alive=0;
+        *playSound = 1;
     }
 }
 
@@ -180,9 +168,8 @@ void mettreAJourAffichageSauvegarde(int xBouton, int yBouton){
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
 
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-
-    // Bouton "Continue"
+    // Save "Save"
+    SDL_SetRenderDrawColor(renderer, 200, 50, 200, 255);
     SDL_Rect rectSave1 = {xBouton, yBouton, largeurBouton, hauteurBouton};
     SDL_RenderFillRect(renderer, &rectSave1);
     dessinerTexte("Sauvegarde 1", xBouton + 20, yBouton + 10, 15);
@@ -193,6 +180,8 @@ void mettreAJourAffichageSauvegarde(int xBouton, int yBouton){
     SDL_RenderFillRect(renderer, &rectSave3);
     dessinerTexte("Sauvegarde 3", xBouton + 20, yBouton + 2 * (hauteurBouton + espacementBouton) + 10, 15);
 
+    // Bouton "Delete"
+    SDL_SetRenderDrawColor(renderer, 150, 150, 150, 255);
     SDL_Rect rectClear1 = {xBouton + largeurBouton + espacementBouton, yBouton, largeurBouton, hauteurBouton};
     SDL_RenderFillRect(renderer, &rectClear1);
     dessinerTexte("Effacer", xBouton + largeurBouton + espacementBouton + 20, yBouton + 10, 15);
@@ -203,6 +192,8 @@ void mettreAJourAffichageSauvegarde(int xBouton, int yBouton){
     SDL_RenderFillRect(renderer, &rectClear3);
     dessinerTexte("Effacer", xBouton + largeurBouton + espacementBouton + 20, yBouton + 2 * (hauteurBouton + espacementBouton) + 10, 15);
 
+    // Bouton "Load"
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     SDL_Rect rectCharge1 = {xBouton + 2 * (largeurBouton + espacementBouton), yBouton, largeurBouton, hauteurBouton};
     SDL_RenderFillRect(renderer, &rectCharge1);
     dessinerTexte("Charger", xBouton + 2 * (largeurBouton + espacementBouton) + 20, yBouton + 10, 15);
