@@ -36,7 +36,7 @@ Alien *creerAlien(int *numberOfAliens) {
     if (nouvelAlien != NULL) {
         nouvelAlien->id = *numberOfAliens;
         nouvelAlien->health=500;
-        nouvelAlien->eatDamage=100;
+        nouvelAlien->eatDamage=10;
         nouvelAlien->satiety=100;
         nouvelAlien->x = rand() % (screenWidth - alienWidth);
         nouvelAlien->y = rand() % (screenHeight - alienHeight);
