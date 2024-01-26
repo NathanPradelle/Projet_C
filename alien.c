@@ -35,9 +35,8 @@ Alien *creerAlien(int *numberOfAliens) {
     Alien *nouvelAlien = (Alien *)malloc(sizeof(Alien));
     if (nouvelAlien != NULL) {
         nouvelAlien->id = *numberOfAliens;
-        nouvelAlien->alive=1;
         nouvelAlien->health=500;
-        nouvelAlien->eatDamage=50;
+        nouvelAlien->eatDamage=100;
         nouvelAlien->satiety=100;
         nouvelAlien->x = rand() % (screenWidth - alienWidth);
         nouvelAlien->y = rand() % (screenHeight - alienHeight);
@@ -97,13 +96,12 @@ void detruireAlien(Alien *alien) {
 }
 
 void deplacerAlien(Alien *alien) {
-    int direction = rand() % 5;
-
+    alien->deplacment = rand() % 5;
     alien->age++;
     alien->time++;
 
     if (alien->time * alien->speed > 500) {
-        switch (direction) {
+        switch (alien->deplacment) {
             case 0:
                 if (alien->y > alien->height + alien->travelDistance) {
                     alien->y -= alien->travelDistance;

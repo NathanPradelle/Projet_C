@@ -343,22 +343,23 @@ ProgramState runSimulation() {
 
             courant = listeAliens;
 
-            if(detecterCollisions(listeAliens)){
-                Mix_Chunk* listen = Mix_LoadWAV("vendor/music/hey_listen.mp3");
-                if (!listen) {
-                    printf("Erreur lors du chargement du bruitage: %s\n", Mix_GetError());
-                    return 1;
-                }
-                int channel = Mix_PlayChannel(-1, listen, 0); // -1 pour choisir un canal disponible, 0 pour jouer une seule fois
-                if (channel == -1) {
-                    printf("Erreur lors de la lecture du bruitage: %s\n", Mix_GetError());
-                    return 1;
-                }
-            };
+            detecterCollisions(listeAliens);
 
             while (courant != NULL) {
                 dessinerAlien(courant);
-                if (courant->alive <= 0 || courant->age > courant->lifespan) {
+                if (courant->health <= 0 || courant->age > courant->lifespan) {
+                    Mix_Chunk* listen = Mix_LoadWAV("vendor/music/hey_listen.mp3");
+                    if (!listen) {
+                        printf("Erreur lors du chargement du bruitage: %s\n", Mix_GetError());
+                        return 1;
+                    }
+                    Mix_PlayChannel(-1, listen, 0); // -1 pour choisir un canal disponible, 0 pour jouer une seule fois
+
+                    // Error message, too much collision slow the run cause of no channel available
+                    // if (channel == -1) {
+                    //     printf("Erreur lors de la lecture du bruitage: %s\n", Mix_GetError());
+                    //     return 1;
+                    // }
                     supprimerAlien(&listeAliens, courant);
                 }
                 courant = courant->next;

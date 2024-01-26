@@ -79,7 +79,8 @@ void mettreAJourAffichage() {
 
 void collisionsDamages(Alien *alien1, Alien *alien2, int *playSound) {
     if(alien1->type != alien2->type){
-        alien1->alive = 0;
+        alien1->health -= alien2->eatDamage;
+        alien2->lifespan += alien2->eatDamage * 100;
         *playSound = 1;
     }
 }
@@ -97,6 +98,20 @@ int detecterCollisions(Alien *listeAliens) {
 
             if (SDL_HasIntersection(&rectangle1, &rectangle2) == SDL_TRUE) {
                 collisionsDamages(alien1, alien2, &playSound);
+                switch (alien1->deplacment) {
+                    case 0:
+                        alien1->y += alien1->travelDistance;
+                        break;
+                    case 1:
+                        alien1->y -= alien1->travelDistance;
+                        break;
+                    case 2:
+                        alien1->x += alien1->travelDistance;
+                        break;
+                    case 3:
+                        alien1->x -= alien1->travelDistance;
+                        break;
+                }
             }
             alien2 = alien2->next;
         }
