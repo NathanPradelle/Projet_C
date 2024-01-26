@@ -10,7 +10,9 @@
 
 #define MAX_ALIENS 50
 
-#define MENU_SIZE 3
+#define MENU_SIZE 4
+
+char *fichier_actuel;
 
 int main(int argc, char *argv[]) {
     ProgramState state = MENU;
@@ -85,13 +87,14 @@ ProgramState runMenu() {
 
     SDL_Color textColor = {255, 255, 255, 0};
 
-    char *menuOptions[MENU_SIZE] = {"commencer", "modifier", "quitter"};
+    char *menuOptions[MENU_SIZE] = {"commencer", "modifier", "sauvgardes", "quitter"};
     int selectedOption = 0;
 
     SDL_Texture *optionTextures[MENU_SIZE];
 
     SDL_Event event;
     int running = 1;
+    int sauvegardeActif = 0;
 
     while (running) {
         while (SDL_PollEvent(&event)) {
@@ -113,12 +116,45 @@ ProgramState runMenu() {
                             
                         }
                         if (selectedOption == 2) {
+                            sauvegardeActif = !sauvegardeActif;
+                        }
+                        if (selectedOption == 4) {
                             running = 0;
                         }
                         break;
                 }
             }
+            else if (sauvegardeActif && event.type == SDL_MOUSEBUTTONDOWN) {
+            int mouseX = event.button.x;
+            int mouseY = event.button.y;
+
+            if (){
+                viderFichier("sauvegarde_1.txt")
+            }
+            if (){
+                viderFichier("sauvegarde2.txt")
+            }
+            if (){
+                viderFichier("sauvegarde_3.txt")
+            }
+            if (){
+                chargerListeDepuisFichier("sauvegarde_1.txt", &listeAliens, &numberOfAliens);
+                fichier_actuel = "sauvegarde_1.txt"
+            }
+            if (){
+                chargerListeDepuisFichier("sauvegarde_2.txt", &listeAliens, &numberOfAliens);
+                fichier_actuel = "sauvegarde_2.txt"
+            }
+            if (){
+                chargerListeDepuisFichier("sauvegarde_3.txt", &listeAliens, &numberOfAliens);
+                fichier_actuel = "sauvegarde_3.txt"
+            }
+            if (){
+                sauvegardeActif = !sauvegardeActif;
+            }
         }
+
+        if(!sauvegardeActif){
 
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderClear(renderer);
@@ -171,6 +207,15 @@ ProgramState runMenu() {
         }
 
         SDL_RenderPresent(renderer);
+
+        } else{
+
+            int xBouton = (screenWidth - (3 * largeurBouton + 2 * espacementBouton)) / 2;
+            int yBouton = (screenHeight - (4 * hauteurBouton + 2 * espacementBouton)) / 2;
+            
+            mettreAJourAffichageSauvegarde(xBouton, yBouton);
+        }
+    }
     }
 
     TTF_CloseFont(font);
@@ -228,13 +273,7 @@ ProgramState runSimulation() {
             if (mouseX >= xBouton && mouseX <= xBouton + largeurBouton &&
                 mouseY >= yBouton + 2 * (hauteurBouton + espacementBouton) &&
                 mouseY <= yBouton + 3 * (hauteurBouton + espacementBouton)) {
-                actionBoutonSauvegarder("sauvegarde_1.txt", listeAliens);
-            }
-
-            if (mouseX >= xBouton && mouseX <= xBouton + largeurBouton &&
-                mouseY >= yBouton + 3 * (hauteurBouton + espacementBouton) &&
-                mouseY <= yBouton + 4 * (hauteurBouton + espacementBouton)) {
-                chargerListeDepuisFichier("sauvegarde_1.txt", &listeAliens, &numberOfAliens);
+                actionBoutonSauvegarder(&fichier_actuel, listeAliens);
             }
 
         }

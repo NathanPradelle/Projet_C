@@ -166,13 +166,53 @@ void mettreAJourAffichageMenu(int xBouton, int yBouton) {
     SDL_RenderFillRect(renderer, &rectSauvegarder);
     dessinerTexte("Sauvegarder", xBouton + 20, yBouton + 2 * (hauteurBouton + espacementBouton) + 10, 15);
 
-    SDL_Rect rectCharge = {xBouton, yBouton + 3 * (hauteurBouton + espacementBouton), largeurBouton, hauteurBouton};
-    SDL_RenderFillRect(renderer, &rectCharge);
-    dessinerTexte("Charger", xBouton + 20, yBouton + 3 * (hauteurBouton + espacementBouton) + 10, 15);
-
     SDL_RenderPresent(renderer);
 }
 
+void mettreAJourAffichageSauvegarde(int xBouton, int yBouton){
+
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_RenderClear(renderer);
+
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+
+    // Bouton "Continue"
+    SDL_Rect rectSave1 = {xBouton, yBouton, largeurBouton, hauteurBouton};
+    SDL_RenderFillRect(renderer, &rectSave1);
+    dessinerTexte("Sauvegarde 1", xBouton + 20, yBouton + 10, 15);
+    SDL_Rect rectSave2 = {xBouton, yBouton + hauteurBouton + espacementBouton, largeurBouton, hauteurBouton};
+    SDL_RenderFillRect(renderer, &rectSave2);
+    dessinerTexte("Sauvegarde 2", xBouton + 20, yBouton + hauteurBouton + espacementBouton + 10, 15);
+    SDL_Rect rectSave3 = {xBouton, yBouton + 2 * (hauteurBouton + espacementBouton), largeurBouton, hauteurBouton};
+    SDL_RenderFillRect(renderer, &rectSave3);
+    dessinerTexte("Sauvegarde 3", xBouton + 20, yBouton + 2 * (hauteurBouton + espacementBouton) + 10, 15);
+
+    SDL_Rect rectClear1 = {xBouton + largeurBouton + espacementBouton, yBouton, largeurBouton, hauteurBouton};
+    SDL_RenderFillRect(renderer, &rectClear1);
+    dessinerTexte("Effacer", xBouton + largeurBouton + espacementBouton + 20, yBouton + 10, 15);
+    SDL_Rect rectClear2  = {xBouton + largeurBouton + espacementBouton, yBouton + hauteurBouton + espacementBouton, largeurBouton, hauteurBouton};
+    SDL_RenderFillRect(renderer, &rectClear2);
+    dessinerTexte("Effacer", xBouton + largeurBouton + espacementBouton + 20, yBouton + hauteurBouton + espacementBouton + 10, 15);
+    SDL_Rect rectClear3 = {xBouton + largeurBouton + espacementBouton, yBouton + 2 * (hauteurBouton + espacementBouton), largeurBouton, hauteurBouton};
+    SDL_RenderFillRect(renderer, &rectClear3);
+    dessinerTexte("Effacer", xBouton + largeurBouton + espacementBouton + 20, yBouton + 2 * (hauteurBouton + espacementBouton) + 10, 15);
+
+    SDL_Rect rectCharge1 = {xBouton + 2 * (largeurBouton + espacementBouton), yBouton, largeurBouton, hauteurBouton};
+    SDL_RenderFillRect(renderer, &rectCharge1);
+    dessinerTexte("Charger", xBouton + 2 * (largeurBouton + espacementBouton) + 20, yBouton + 10, 15);
+    SDL_Rect rectCharge2 = {xBouton + 2 * (largeurBouton + espacementBouton), yBouton + hauteurBouton + espacementBouton, largeurBouton, hauteurBouton};
+    SDL_RenderFillRect(renderer, &rectCharge2);
+    dessinerTexte("Charger", xBouton + 2 * (largeurBouton + espacementBouton) + 20, yBouton + hauteurBouton + espacementBouton + 10, 15);
+    SDL_Rect rectCharge3 = {xBouton + 2 * (largeurBouton + espacementBouton), yBouton + 2 * (hauteurBouton + espacementBouton), largeurBouton, hauteurBouton};
+    SDL_RenderFillRect(renderer, &rectCharge3);
+    dessinerTexte("Charger", xBouton + 2 * (largeurBouton + espacementBouton) + 20, yBouton + 2 * (hauteurBouton + espacementBouton) + 10, 15);
+
+    SDL_Rect retour = {xBouton + largeurBouton + espacementBouton, yBouton + 3 * (hauteurBouton + espacementBouton), largeurBouton, hauteurBouton};
+    SDL_RenderFillRect(renderer, &retour);
+    dessinerTexte("Retour", xBouton + largeurBouton + espacementBouton + 20, yBouton + 3 * (hauteurBouton + espacementBouton) + 10, 15);
+
+    SDL_RenderPresent(renderer);
+}
 
 void dessinerTexte(const char *texte, int x, int y, int taillePolice) {
     TTF_Font *police = TTF_OpenFont("vendor/font/Alien_Moon.ttf", taillePolice);
@@ -244,4 +284,21 @@ void chargerListeDepuisFichier(const char *nomFichier, Alien **listeAliens, int 
 
     // Fermer le fichier
     fclose(fichier);
+}
+
+void viderFichier(const char *chemin) {
+    FILE *fichier = fopen(chemin, "w");
+
+    if (fichier == NULL) {
+        perror("Erreur lors de l'ouverture du fichier en écriture");
+        return;
+    }
+
+    // Écrire une chaîne vide pour vider le fichier
+    fprintf(fichier, "");
+
+    // Fermer le fichier
+    fclose(fichier);
+
+    printf("Fichier vidé avec succès.\n");
 }
