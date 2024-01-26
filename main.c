@@ -32,7 +32,7 @@ int globalConfig(int *refreshDelay, int *maxAliens) {
     return 0;
 }
 
-int main(int argc, char *argv[]) {
+int main() {
     ProgramState state = MENU;
 
     while (state != QUIT) {
@@ -141,35 +141,34 @@ ProgramState runMenu() {
                         }
                         break;
                 }
-            }
-            else if (sauvegardeActif && event.type == SDL_MOUSEBUTTONDOWN) {
-            int mouseX = event.button.x;
-            int mouseY = event.button.y;
+            } else if (sauvegardeActif && event.type == SDL_MOUSEBUTTONDOWN) {
+            // int mouseX = event.button.x;
+            // int mouseY = event.button.y;
 
-            if (){
-                viderFichier("sauvegarde_1.txt")
-            }
-            if (){
-                viderFichier("sauvegarde2.txt")
-            }
-            if (){
-                viderFichier("sauvegarde_3.txt")
-            }
-            if (){
-                chargerListeDepuisFichier("sauvegarde_1.txt", &listeAliens, &numberOfAliens);
-                fichier_actuel = "sauvegarde_1.txt"
-            }
-            if (){
-                chargerListeDepuisFichier("sauvegarde_2.txt", &listeAliens, &numberOfAliens);
-                fichier_actuel = "sauvegarde_2.txt"
-            }
-            if (){
-                chargerListeDepuisFichier("sauvegarde_3.txt", &listeAliens, &numberOfAliens);
-                fichier_actuel = "sauvegarde_3.txt"
-            }
-            if (){
-                sauvegardeActif = !sauvegardeActif;
-            }
+            // if (){
+            //     viderFichier("sauvegarde_1.txt")
+            // }
+            // if (){
+            //     viderFichier("sauvegarde2.txt")
+            // }
+            // if (){
+            //     viderFichier("sauvegarde_3.txt")
+            // }
+            // if (){
+            //     chargerListeDepuisFichier("sauvegarde_1.txt", &listeAliens, &numberOfAliens);
+            //     fichier_actuel = "sauvegarde_1.txt"
+            // }
+            // if (){
+            //     chargerListeDepuisFichier("sauvegarde_2.txt", &listeAliens, &numberOfAliens);
+            //     fichier_actuel = "sauvegarde_2.txt"
+            // }
+            // if (){
+            //     chargerListeDepuisFichier("sauvegarde_3.txt", &listeAliens, &numberOfAliens);
+            //     fichier_actuel = "sauvegarde_3.txt"
+            // }
+            // if (){
+            //     sauvegardeActif = !sauvegardeActif;
+            // }
         }
 
         if(!sauvegardeActif){
@@ -228,10 +227,10 @@ ProgramState runMenu() {
 
         } else{
 
-            int xBouton = (screenWidth - (3 * largeurBouton + 2 * espacementBouton)) / 2;
-            int yBouton = (screenHeight - (4 * hauteurBouton + 2 * espacementBouton)) / 2;
-            
-            mettreAJourAffichageSauvegarde(xBouton, yBouton);
+            // int xBouton = (screenWidth - (3 * largeurBouton + 2 * espacementBouton)) / 2;
+            // int yBouton = (screenHeight - (4 * hauteurBouton + 2 * espacementBouton)) / 2;
+
+            // mettreAJourAffichageSauvegarde(xBouton, yBouton);
         }
     }
     }
@@ -291,10 +290,17 @@ ProgramState runSimulation() {
                     continuer = 0; // Quitte l'application
                 }
 
-            if (mouseX >= xBouton && mouseX <= xBouton + largeurBouton &&
-                mouseY >= yBouton + 2 * (hauteurBouton + espacementBouton) &&
-                mouseY <= yBouton + 3 * (hauteurBouton + espacementBouton)) {
-                actionBoutonSauvegarder(&fichier_actuel, listeAliens);
+                if (mouseX >= xBouton && mouseX <= xBouton + largeurBouton &&
+                    mouseY >= yBouton + 2 * (hauteurBouton + espacementBouton) &&
+                    mouseY <= yBouton + 3 * (hauteurBouton + espacementBouton)) {
+                    actionBoutonSauvegarder(fichier_actuel, listeAliens);
+                }
+
+                if (mouseX >= xBouton && mouseX <= xBouton + largeurBouton &&
+                    mouseY >= yBouton + 3 * (hauteurBouton + espacementBouton) &&
+                    mouseY <= yBouton + 4 * (hauteurBouton + espacementBouton)) {
+                    chargerListeDepuisFichier(fichier_actuel, &listeAliens, &numberOfAliens);
+                }
             }
         }
 
@@ -313,7 +319,7 @@ ProgramState runSimulation() {
 
             while (courant != NULL) {
                 dessinerAlien(courant);
-                if (courant->alive <= 0) {
+                if (courant->alive <= 0 || courant->age > courant->lifespan) {
                     supprimerAlien(&listeAliens, courant);
                 }
                 courant = courant->next;
