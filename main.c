@@ -38,7 +38,6 @@ int main() {
     while (state != QUIT) {
         switch (state) {
             case MENU:
-                state = runMenu();
                 if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
                     printf("Erreur lors de l'initialisation de SDL_mixer: %s\n", Mix_GetError());
                 }
@@ -52,9 +51,9 @@ int main() {
                     return QUIT;
                 }
                 Mix_RewindMusic();
+                state = runMenu();
                 break;
             case SIMULATION:
-                state = runSimulation();
                 if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
                     printf("Erreur lors de l'initialisation de SDL_mixer: %s\n", Mix_GetError());
                 }
@@ -66,6 +65,7 @@ int main() {
                     printf("Erreur lors de la lecture de la musique: %s\n", Mix_GetError());
                     return QUIT;
                 }
+                state = runSimulation();
                 break;
             case QUIT:
                 state = QUIT;
@@ -324,12 +324,6 @@ ProgramState runSimulation() {
                 }
                 courant = courant->next;
             }
-            
-            // while (courant != NULL) {
-            //     Alien *suivant = courant->next;
-            //     detruireAlien(courant);
-            //     courant = suivant;
-            // }
 
             mettreAJourAffichage();
             SDL_Delay(refreshDelay);

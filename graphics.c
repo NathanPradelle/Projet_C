@@ -3,23 +3,31 @@
 
 SDL_Renderer *renderer = NULL;
 SDL_Window *fenetre = NULL;
-int screenWidth, screenHeight;
+int screenWidth, screenHeight = 1000;
+int agingRender = 240;
 int largeurBouton = 200;
 int hauteurBouton = 50;
 int espacementBouton = 20;
 int xBouton, yBouton;
 
-int windowsConfig(int * screenWidth, int * screenHeight) {
+int windowsConfig(int *screenWidth, int *screenHeight, int *agingRender) {
     FILE *configFile = fopen("config.txt", "r");
     if (configFile == NULL) {
         perror("Impossible d'ouvrir le fichier de configuration");
         return 1;
     }
 
+    int newAgingRender = 0;
     char line[150];
     while (fgets(line, sizeof(line), configFile) != NULL) {
         sscanf(line, "SCREEN_WIDTH=%d", screenWidth);
         sscanf(line, "SCREEN_HEIGHT=%d", screenHeight);
+        sscanf(line, "AGING_RENDER=%d", &newAgingRender);
+    }
+
+    // Check field limit
+    if (newAgingRender > 255) {
+        *agingRender = newAgingRender;
     }
 
     fclose(configFile);
@@ -27,7 +35,7 @@ int windowsConfig(int * screenWidth, int * screenHeight) {
 }
 
 void initSDL() {
-    windowsConfig(&screenWidth, &screenHeight);
+    windowsConfig(&screenWidth, &screenHeight, &agingRender);
 
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 
@@ -57,7 +65,7 @@ int initSDL_main() {
 void cleanupSDL() {
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(fenetre);
-    SDL_Quit();
+    // SDL_Quit();
 }
 
 void effacerFenetre() {
@@ -69,70 +77,71 @@ void mettreAJourAffichage() {
     SDL_RenderPresent(renderer);
 }
 
+void collisionsDamages(Alien *alien1, Alien *alien2) {
+    if(alien1->type!=alien2->type){
+        if(alien1->type == 0){
+            if(alien2->type == 1){
+                alien1->alive=0;
+            } else {
+                alien2->alive=0;
+            }
+        }
+        if(alien1->type == 1){
+            if(alien2 == 0){
+                alien2->alive=0;
+            } else {
+                alien1->alive=0;
+            }
+        }
+        if(alien1->type == 2){
+            if(alien2->type == 0){
+                alien1->alive=0;
+            } else {
+                alien2->alive=0;
+            }
+        }
+    }
+}
+
 void detecterCollisions(Alien *listeAliens) {
     Alien *alien1 = listeAliens;
 
     while (alien1 != NULL) {
         Alien *alien2 = alien1->next;
+        SDL_Rect rectangle1 = {alien1->x, alien1->y, alien1->width, alien1->height};
 
         while (alien2 != NULL) {
-            if (alien1->x < alien2->x + alien2->width &&
-                alien1->x + alien1->width > alien2->x &&
-                alien1->y < alien2->y + alien2->height &&
-                alien1->y + alien1->height > alien2->y) {
-                // printf("Collision détectée entre deux aliens!\n");
-                if(alien1->type!=alien2->type && alien1->alive && alien2->alive){
-                    if(alien1->type==0){
-                        if(alien2->type==1){
-                            alien1->alive=0;
-                        } else {
-                            alien2->alive=0;
-                        }
-                    }
-                    if(alien1->type==1){
-                        if(alien2==0){
-                            alien2->alive=0;
-                        } else {
-                            alien1->alive=0;
-                        }
-                    }
-                    if(alien1->type==2){
-                        if(alien2->type==0){
-                            alien1->alive=0;
-                        } else {
-                            alien2->alive=0;
-                        }
-                    }
-                }
-            }
+            SDL_Rect rectangle2 = {alien2->x, alien2->y, alien2->width, alien2->height};
 
+            if (SDL_HasIntersection(&rectangle1, &rectangle2) == SDL_TRUE) {
+                collisionsDamages(alien1, alien2);
+            }
             alien2 = alien2->next;
         }
-
         alien1 = alien1->next;
     }
 }
 
 void itemGenerer(SDL_Renderer* renderer, int x, int y, int size, SDL_Color fillColor, SDL_Color borderColor) {
-    // Dessiner le carré rempli avec la couleur de fond
+    // Draw square
     SDL_SetRenderDrawColor(renderer, fillColor.r, fillColor.g, fillColor.b, fillColor.a);
     SDL_Rect squareRect = {x, y, size, size};
     SDL_RenderFillRect(renderer, &squareRect);
 
-    // Dessiner les contours du carré avec la couleur de la bordure
+    // Draw borders
     SDL_SetRenderDrawColor(renderer, borderColor.r, borderColor.g, borderColor.b, borderColor.a);
     SDL_RenderDrawRect(renderer, &squareRect);
 }
 
 void dessinerAlien(Alien *alien) {
     if(alien->type==0){
-        SDL_SetRenderDrawColor(renderer, 255 - alien->age * 220/alien->lifespan, 0, 0, 255-alien->age);
+        SDL_SetRenderDrawColor(renderer, 255 - alien->age * agingRender/alien->lifespan, 0, 0, 255-alien->age);
     }
     if(alien->type==1){
-        SDL_SetRenderDrawColor(renderer, 0, 255 - alien->age * 220/alien->lifespan, 0, 255-alien->age);
+        SDL_SetRenderDrawColor(renderer, 0, 255 - alien->age * agingRender/alien->lifespan, 0, 255-alien->age);
     }
     if(alien->type==2){
-        SDL_SetRenderDrawColor(renderer, 0, 0, 255 - alien->age * 220/alien->lifespan, 255-alien->age);
+        SDL_SetRenderDrawColor(renderer, 0, 0, 255 - alien->age * agingRender/alien->lifespan, 255-alien->age);
     }
 
     SDL_Rect rectangle = {alien->x, alien->y, alien->width, alien->height};
@@ -145,17 +154,17 @@ void mettreAJourAffichageMenu(int xBouton, int yBouton) {
 
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 
-    // Bouton "Continue"
+    // Button "Continue"
     SDL_Rect rectContinue = {xBouton, yBouton, largeurBouton, hauteurBouton};
     SDL_RenderFillRect(renderer, &rectContinue);
     dessinerTexte("Continue", xBouton + 20, yBouton + 10, 15);
 
-    // Bouton "Quit"
+    // Button "Quit"
     SDL_Rect rectQuit = {xBouton, yBouton + hauteurBouton + espacementBouton, largeurBouton, hauteurBouton};
     SDL_RenderFillRect(renderer, &rectQuit);
     dessinerTexte("Quit", xBouton + 20, yBouton + hauteurBouton + espacementBouton + 10, 15);
 
-    // Bouton "Sauvegarder"
+    // Button "Sauvegarder"
     SDL_Rect rectSauvegarder = {xBouton, yBouton + 2 * (hauteurBouton + espacementBouton), largeurBouton, hauteurBouton};
     SDL_RenderFillRect(renderer, &rectSauvegarder);
     dessinerTexte("Sauvegarder", xBouton + 20, yBouton + 2 * (hauteurBouton + espacementBouton) + 10, 15);
@@ -215,7 +224,7 @@ void dessinerTexte(const char *texte, int x, int y, int taillePolice) {
         return;
     }
 
-    SDL_Color couleurTexte = {0, 0, 0, 255}; // Couleur du texte en noir
+    SDL_Color couleurTexte = {0, 0, 0, 255}; // Text in black
     SDL_Surface *surfaceTexte = TTF_RenderText_Solid(police, texte, couleurTexte);
     if (surfaceTexte == NULL) {
         fprintf(stderr, "Erreur lors de la création de la surface texte : %s\n", TTF_GetError());
@@ -241,42 +250,41 @@ void dessinerTexte(const char *texte, int x, int y, int taillePolice) {
 }
 
 void actionBoutonSauvegarder(const char *nomFichier, Alien *listeAliens) {
-    // Ouverture du fichier en mode écriture
+    // Open file in wrighting mode
     FILE *fichier = fopen(nomFichier, "w");
     if (fichier == NULL) {
         fprintf(stderr, "Erreur lors de l'ouverture du fichier pour la sauvegarde.\n");
         return;
     }
 
-    // Parcours de la liste et écriture dans le fichier
+    // Writing in file
     Alien *courant = listeAliens;
     while (courant != NULL) {
         fprintf(fichier, "%ld %d %d\n", courant->id, courant->x, courant->y);
         courant = courant->next;
     }
 
-    // Fermeture du fichier
     fclose(fichier);
 }
 
 void chargerListeDepuisFichier(const char *nomFichier, Alien **listeAliens, int *numberOfAliens) {
-    // Ouvrir le fichier en mode lecture
-
-    viderListeAliens(listeAliens);
-    long id;
-    int x, y;
+    // Open file in reading mode
     FILE *fichier = fopen(nomFichier, "r");
+
     if (fichier == NULL) {
         fprintf(stderr, "Erreur lors de l'ouverture du fichier : %s\n", nomFichier);
         return;
     }
 
-    // Lire les données du fichier et mettre à jour la liste
+    viderListeAliens(listeAliens);
+    long id;
+    int x, y;
+
+    // Read file and update aliens
     while (fscanf(fichier, "%ld %d %d", &id, &x, &y) == 3) {
         ajouterAlienDepuisFichier(listeAliens, numberOfAliens, id, x, y);
     }
 
-    // Fermer le fichier
     fclose(fichier);
 }
 
@@ -288,11 +296,7 @@ void viderFichier(const char *chemin) {
         return;
     }
 
-    // Écrire une chaîne vide pour vider le fichier
     fprintf(fichier, "");
 
-    // Fermer le fichier
     fclose(fichier);
-
-    printf("Fichier vidé avec succès.\n");
 }

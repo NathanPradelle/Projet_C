@@ -34,14 +34,17 @@ Alien *creerAlien(int *numberOfAliens) {
     ++*numberOfAliens;
     Alien *nouvelAlien = (Alien *)malloc(sizeof(Alien));
     if (nouvelAlien != NULL) {
-        nouvelAlien->alive=1;
         nouvelAlien->id = *numberOfAliens;
+        nouvelAlien->alive=1;
+        nouvelAlien->health=500;
+        nouvelAlien->eatDamage=50;
+        nouvelAlien->satiety=100;
         nouvelAlien->x = rand() % (screenWidth - alienWidth);
         nouvelAlien->y = rand() % (screenHeight - alienHeight);
-        nouvelAlien->speed = defaultSpeed;
-        nouvelAlien->travelDistance = alienTravelDistance;
         nouvelAlien->width = alienWidth;
         nouvelAlien->height = alienHeight;
+        nouvelAlien->speed = defaultSpeed;
+        nouvelAlien->travelDistance = alienTravelDistance;
         nouvelAlien->time = 0;
         nouvelAlien->age = 0;
         nouvelAlien->lifespan = alienLifespan;
@@ -70,7 +73,7 @@ void supprimerAlien(Alien **listeAliens, Alien *alien) {
     Alien *courant = *listeAliens;
     Alien *precedent = NULL;
 
-    // Recherche de l'alien dans la liste
+    // Search alien in list
     while (courant != NULL && courant != alien) {
         precedent = courant;
         courant = courant->next;
@@ -146,7 +149,7 @@ void ajouterAlienDepuisFichier(Alien **liste, int *numberOfAliens, long id, int 
 void viderListeAliens(Alien **listeAliens) {
     while (*listeAliens != NULL) {
         Alien *suivant = (*listeAliens)->next;
-        free(*listeAliens);  // Libérer la mémoire de l'élément actuel
+        free(*listeAliens);  // Free current alien
         *listeAliens = suivant;
     }
 }
