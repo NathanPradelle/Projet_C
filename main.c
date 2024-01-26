@@ -43,7 +43,7 @@ int main() {
                 if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
                     printf("Erreur lors de l'initialisation de SDL_mixer: %s\n", Mix_GetError());
                 }
-                Mix_Music *music = Mix_LoadMUS("music/Program in C.mp3");
+                Mix_Music *music = Mix_LoadMUS("vendor/music/Program in C.mp3");
                 if (!music) {
                     printf("Erreur lors du chargement du fichier MP3: %s\n", Mix_GetError());
                     return QUIT;
@@ -165,28 +165,31 @@ ProgramState runMenu() {
             }
             if (mouseX >= xBouton + 2 * (largeurBouton + espacementBouton) && mouseX <= xBouton + 2 * (largeurBouton + espacementBouton) + largeurBouton &&
                 mouseY >= yBouton && mouseY <= yBouton + hauteurBouton){
+                fichier_actuel = "sauvegarde_1.txt";
                 if(!chargerListeDepuisFichier("sauvegarde_1.txt", &listeAliens, &numberOfAliens)){
                     fprintf(stderr, "Erreur lors du chargement du fichier\n");
                 } else {
-                fichier_actuel = "sauvegarde_1.txt";
+                free(fichier_actuel);
                 return SIMULATION;
                 }
             }
             if (mouseX >= xBouton + 2 * (largeurBouton + espacementBouton) && mouseX <= xBouton + 2 * (largeurBouton + espacementBouton) + largeurBouton &&
                 mouseY >= yBouton + hauteurBouton + espacementBouton && mouseY <= yBouton + hauteurBouton + espacementBouton + hauteurBouton){
+                fichier_actuel = "sauvegarde_2.txt";
                 if(!chargerListeDepuisFichier("sauvegarde_2.txt", &listeAliens, &numberOfAliens)){
                     fprintf(stderr, "Erreur lors du chargement du fichier\n");
                 } else {
-                fichier_actuel = "sauvegarde_2.txt";
+                free(fichier_actuel);
                 return SIMULATION;
                 }
             }
             if (mouseX >= xBouton + 2 * (largeurBouton + espacementBouton) && mouseX <= xBouton + 2 * (largeurBouton + espacementBouton) + largeurBouton &&
                 mouseY >= yBouton + 2 * (hauteurBouton + espacementBouton) && mouseY <= yBouton + 2 * (hauteurBouton + espacementBouton) + hauteurBouton){
+                fichier_actuel = "sauvegarde_3.txt";
                 if(!chargerListeDepuisFichier("sauvegarde_3.txt", &listeAliens, &numberOfAliens)){
                     fprintf(stderr, "Erreur lors du chargement du fichier\n");
                 } else {
-                fichier_actuel = "sauvegarde_3.txt";
+                free(fichier_actuel);
                 return SIMULATION;
                 }
             }
@@ -345,7 +348,7 @@ ProgramState runSimulation() {
             courant = listeAliens;
 
             if(detecterCollisions(listeAliens)){
-                Mix_Chunk* listen = Mix_LoadWAV("music/hey_listen.mp3");
+                Mix_Chunk* listen = Mix_LoadWAV("vendor/music/hey_listen.mp3");
                 if (!listen) {
                     printf("Erreur lors du chargement du bruitage: %s\n", Mix_GetError());
                     return 1;
