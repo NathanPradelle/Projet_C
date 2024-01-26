@@ -308,7 +308,7 @@ void viderFichier(const char *chemin) {
 
 char *verifVide() {
     for (int i = 1; i < 4; i++) {
-        char fileName[20];
+        char fileName[50];
         sprintf(fileName, "vendor/save/sauvegarde_%d.txt", i);
         char *result = malloc(strlen(fileName) + 1);
         FILE *saveFile = fopen(fileName, "r");
