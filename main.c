@@ -8,7 +8,7 @@
 #include "alien.h"
 #include <time.h>
 
-#define MENU_SIZE 4
+#define MENU_SIZE 3
 
 char *fichier_actuel;
 Alien *listeAliens = NULL;
@@ -108,7 +108,7 @@ ProgramState runMenu() {
 
     SDL_Color textColor = {255, 255, 255, 0};
 
-    char *menuOptions[MENU_SIZE] = {"commencer", "modifier", "sauvgardes", "quitter"};
+    char *menuOptions[MENU_SIZE] = {"commencer", "sauvgardes", "quitter"};
     int selectedOption = 0;
 
     SDL_Texture *optionTextures[MENU_SIZE];
@@ -134,12 +134,9 @@ ProgramState runMenu() {
                             return SIMULATION;
                         }
                         if (selectedOption == 1) {
-                            
-                        }
-                        if (selectedOption == 2) {
                             sauvegardeActif = !sauvegardeActif;
                         }
-                        if (selectedOption == 4) {
+                        if (selectedOption == 2) {
                             return QUIT;
                         }
                         break;
