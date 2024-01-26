@@ -7,10 +7,7 @@ int screenWidth, screenHeight;
 int largeurBouton = 200;
 int hauteurBouton = 50;
 int espacementBouton = 20;
-int xBouton;
-int yBouton;
-
-
+int xBouton, yBouton;
 
 int windowsConfig(int * screenWidth, int * screenHeight) {
     FILE *configFile = fopen("config.txt", "r");
@@ -127,18 +124,18 @@ void itemGenerer(SDL_Renderer* renderer, int x, int y, int size, SDL_Color fillC
     SDL_RenderDrawRect(renderer, &squareRect);
 }
 
-void dessinerAlien(const Alien *alien) {
-    if(alien->alive==0 || alien->age>=500){
+void dessinerAlien(Alien *alien) {
+    if(alien->alive == 0 || alien->age >= alien->lifespan){
             SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
     } else {
         if(alien->type==0){
-            SDL_SetRenderDrawColor(renderer, 255, 255-alien->age, 255-alien->age, 255-alien->age);
+            SDL_SetRenderDrawColor(renderer, 255 - alien->age * 220/alien->lifespan, 0, 0, 255-alien->age);
         }
         if(alien->type==1){
-            SDL_SetRenderDrawColor(renderer, 255-alien->age, 255, 255-alien->age, 255-alien->age);
+            SDL_SetRenderDrawColor(renderer, 0, 255 - alien->age * 220/alien->lifespan, 0, 255-alien->age);
         }
         if(alien->type==2){
-            SDL_SetRenderDrawColor(renderer, 255-alien->age, 255-alien->age, 255, 255-alien->age);
+            SDL_SetRenderDrawColor(renderer, 0, 0, 255 - alien->age * 220/alien->lifespan, 255-alien->age);
         }
     }
     SDL_Rect rectangle = {alien->x, alien->y, alien->width, alien->height};

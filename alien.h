@@ -12,6 +12,7 @@ typedef struct Alien {
     int width;
     int height;
     int age;
+    float lifespan;
     int satiety;
     int eatDamage;
     int time;
