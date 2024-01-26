@@ -8,7 +8,7 @@
 #include "alien.h"
 #include <time.h>
 
-#define MENU_SIZE 4
+#define MENU_SIZE 3
 
 char *fichier_actuel;
 Alien *listeAliens = NULL;
@@ -108,7 +108,7 @@ ProgramState runMenu() {
 
     SDL_Color textColor = {255, 255, 255, 0};
 
-    char *menuOptions[MENU_SIZE] = {"commencer", "modifier", "sauvgardes", "quitter"};
+    char *menuOptions[MENU_SIZE] = {"commencer", "sauvgardes", "quitter"};
     int selectedOption = 0;
 
     SDL_Texture *optionTextures[MENU_SIZE];
@@ -134,13 +134,10 @@ ProgramState runMenu() {
                             return SIMULATION;
                         }
                         if (selectedOption == 1) {
-                            
-                        }
-                        if (selectedOption == 2) {
                             sauvegardeActif = !sauvegardeActif;
                         }
-                        if (selectedOption == 4) {
-                            running = 0;
+                        if (selectedOption == 2) {
+                            return QUIT;
                         }
                         break;
                 }
@@ -165,31 +162,31 @@ ProgramState runMenu() {
             }
             if (mouseX >= xBouton + 2 * (largeurBouton + espacementBouton) && mouseX <= xBouton + 2 * (largeurBouton + espacementBouton) + largeurBouton &&
                 mouseY >= yBouton && mouseY <= yBouton + hauteurBouton){
+                fichier_actuel = "sauvegarde_1.txt";
                 if(!chargerListeDepuisFichier("sauvegarde_1.txt", &listeAliens, &numberOfAliens)){
                     fprintf(stderr, "Erreur lors du chargement du fichier\n");
                 } else {
                 free(fichier_actuel);
-                fichier_actuel = "sauvegarde_1.txt";
                 return SIMULATION;
                 }
             }
             if (mouseX >= xBouton + 2 * (largeurBouton + espacementBouton) && mouseX <= xBouton + 2 * (largeurBouton + espacementBouton) + largeurBouton &&
                 mouseY >= yBouton + hauteurBouton + espacementBouton && mouseY <= yBouton + hauteurBouton + espacementBouton + hauteurBouton){
+                fichier_actuel = "sauvegarde_2.txt";
                 if(!chargerListeDepuisFichier("sauvegarde_2.txt", &listeAliens, &numberOfAliens)){
                     fprintf(stderr, "Erreur lors du chargement du fichier\n");
                 } else {
                 free(fichier_actuel);
-                fichier_actuel = "sauvegarde_2.txt";
                 return SIMULATION;
                 }
             }
             if (mouseX >= xBouton + 2 * (largeurBouton + espacementBouton) && mouseX <= xBouton + 2 * (largeurBouton + espacementBouton) + largeurBouton &&
                 mouseY >= yBouton + 2 * (hauteurBouton + espacementBouton) && mouseY <= yBouton + 2 * (hauteurBouton + espacementBouton) + hauteurBouton){
+                fichier_actuel = "sauvegarde_3.txt";
                 if(!chargerListeDepuisFichier("sauvegarde_3.txt", &listeAliens, &numberOfAliens)){
                     fprintf(stderr, "Erreur lors du chargement du fichier\n");
                 } else {
                 free(fichier_actuel);
-                fichier_actuel = "sauvegarde_3.txt";
                 return SIMULATION;
                 }
             }
