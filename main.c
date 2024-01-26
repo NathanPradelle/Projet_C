@@ -73,7 +73,7 @@ int main() {
                 state = runSimulation();
                 break;
             case QUIT:
-                return QUIT;
+                cleanupSDL();
                 break;
         break;
         }
@@ -379,10 +379,11 @@ ProgramState runSimulation() {
 
     while (courant != NULL) {
         Alien *suivant = courant->next;
-        detruireAlien(courant);
+        supprimerAlien(&listeAliens, courant);
         courant = suivant;
     }
 
+    numberOfAliens = 0;
     cleanupSDL();
 
     return MENU;
