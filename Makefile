@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -std=c11 -Wall -Wextra -I./vendor/include -L./vendor/lib -lSDL2_ttf -lSDL2 -Wl,-subsystem,windows -DSDL_MAIN_HANDLED
+CFLAGS = -std=c11 -Wall -Wextra -I./vendor/include -L./vendor/lib -lSDL2_ttf -lSDL2 -lSDL2_image -lSDL2_mixer -Wl,-subsystem,windows -DSDL_MAIN_HANDLED
 SRCS = main.c graphics.c alien.c  # Ajoutez les fichiers ici
 OBJS = $(SRCS:.c=.o)
 

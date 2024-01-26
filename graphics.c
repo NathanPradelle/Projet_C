@@ -48,7 +48,7 @@ void initSDL() {
     }
 }
 
-int initSDL_main(int argc, char *argv[]) {
+int initSDL_main() {
     initSDL();
     TTF_Init();
     return 0;
