@@ -152,20 +152,20 @@ ProgramState runMenu() {
 
             if (mouseX >= xBouton + largeurBouton + espacementBouton && mouseX <= xBouton + largeurBouton + espacementBouton + largeurBouton &&
                 mouseY >= yBouton && mouseY <= yBouton + hauteurBouton){
-                viderFichier("sauvegarde_1.txt");
+                viderFichier("vendor/save/sauvegarde_1.txt");
             }
             if (mouseX >= xBouton + largeurBouton + espacementBouton && mouseX <= xBouton + largeurBouton + espacementBouton + largeurBouton &&
                 mouseY >= yBouton + hauteurBouton + espacementBouton && mouseY <= yBouton + hauteurBouton + espacementBouton + hauteurBouton){
-                viderFichier("sauvegarde2.txt");
+                viderFichier("vendor/save/sauvegarde_2.txt");
             }
             if (mouseX >= xBouton + largeurBouton + espacementBouton && mouseX <= xBouton + largeurBouton + espacementBouton + largeurBouton &&
                 mouseY >= yBouton + 2 * (hauteurBouton + espacementBouton) && mouseY <= yBouton + 2 * (hauteurBouton + espacementBouton) + hauteurBouton){
-                viderFichier("sauvegarde_3.txt");
+                viderFichier("vendor/save/sauvegarde_3.txt");
             }
             if (mouseX >= xBouton + 2 * (largeurBouton + espacementBouton) && mouseX <= xBouton + 2 * (largeurBouton + espacementBouton) + largeurBouton &&
                 mouseY >= yBouton && mouseY <= yBouton + hauteurBouton){
-                fichier_actuel = "sauvegarde_1.txt";
-                if(!chargerListeDepuisFichier("sauvegarde_1.txt", &listeAliens, &numberOfAliens)){
+                fichier_actuel = "vendor/save/sauvegarde_1.txt";
+                if(!chargerListeDepuisFichier("vendor/save/sauvegarde_1.txt", &listeAliens, &numberOfAliens)){
                     fprintf(stderr, "Erreur lors du chargement du fichier\n");
                 } else {
                 return SIMULATION;
@@ -173,8 +173,8 @@ ProgramState runMenu() {
             }
             if (mouseX >= xBouton + 2 * (largeurBouton + espacementBouton) && mouseX <= xBouton + 2 * (largeurBouton + espacementBouton) + largeurBouton &&
                 mouseY >= yBouton + hauteurBouton + espacementBouton && mouseY <= yBouton + hauteurBouton + espacementBouton + hauteurBouton){
-                fichier_actuel = "sauvegarde_2.txt";
-                if(!chargerListeDepuisFichier("sauvegarde_2.txt", &listeAliens, &numberOfAliens)){
+                fichier_actuel = "vendor/save/sauvegarde_2.txt";
+                if(!chargerListeDepuisFichier("vendor/save/sauvegarde_2.txt", &listeAliens, &numberOfAliens)){
                     fprintf(stderr, "Erreur lors du chargement du fichier\n");
                 } else {
                 return SIMULATION;
@@ -182,8 +182,8 @@ ProgramState runMenu() {
             }
             if (mouseX >= xBouton + 2 * (largeurBouton + espacementBouton) && mouseX <= xBouton + 2 * (largeurBouton + espacementBouton) + largeurBouton &&
                 mouseY >= yBouton + 2 * (hauteurBouton + espacementBouton) && mouseY <= yBouton + 2 * (hauteurBouton + espacementBouton) + hauteurBouton){
-                fichier_actuel = "sauvegarde_3.txt";
-                if(!chargerListeDepuisFichier("sauvegarde_3.txt", &listeAliens, &numberOfAliens)){
+                fichier_actuel = "vendor/save/sauvegarde_3.txt";
+                if(!chargerListeDepuisFichier("vendor/save/sauvegarde_3.txt", &listeAliens, &numberOfAliens)){
                     fprintf(stderr, "Erreur lors du chargement du fichier\n");
                 } else {
                 return SIMULATION;

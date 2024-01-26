@@ -42,6 +42,7 @@ Alien *creerAlien(int *numberOfAliens) {
         nouvelAlien->x = rand() % (screenWidth - alienWidth);
         nouvelAlien->y = rand() % (screenHeight - alienHeight);
         nouvelAlien->width = alienWidth;
+        nouvelAlien->deplacment = 0;
         nouvelAlien->height = alienHeight;
         nouvelAlien->speed = defaultSpeed;
         nouvelAlien->travelDistance = alienTravelDistance;
@@ -49,6 +50,7 @@ Alien *creerAlien(int *numberOfAliens) {
         nouvelAlien->age = 0;
         nouvelAlien->lifespan = alienLifespan;
         nouvelAlien->type = rand() % 3;
+        nouvelAlien->race = NULL;
         nouvelAlien->next = NULL;
     }
     return nouvelAlien;

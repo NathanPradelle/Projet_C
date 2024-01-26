@@ -7,30 +7,20 @@ typedef struct Alien {
     int health;
     int x;
     int y;
-    float speed;
-    int travelDistance;
     int width;
     int height;
+    float speed;
+    int travelDistance;
     int age;
     float lifespan;
-    int satiety;
-    int eatDamage;
+    short satiety;
+    short eatDamage;
     int time;
-    int type;
-    struct Race *race;
+    short type;
+    int deplacment;
+    int *race;
     struct Alien *next;
 } Alien;
-
-typedef struct Race {
-    long id;
-    char *name;
-    short *color;
-    char *like;
-    char *dislike;
-} Race;
-
-// Une mutation est juste une modification de ces valeurs
-
 
 Alien *creerAlien(int *numberOfAliens);
 void detruireAlien(Alien *alien);
