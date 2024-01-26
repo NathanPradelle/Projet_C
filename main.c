@@ -65,6 +65,7 @@ int main() {
                     printf("Erreur lors de la lecture de la musique: %s\n", Mix_GetError());
                     return QUIT;
                 }
+                Mix_RewindMusic();
                 state = runSimulation();
                 break;
             case QUIT:
@@ -315,7 +316,19 @@ ProgramState runSimulation() {
             }
 
             courant = listeAliens;
-            detecterCollisions(listeAliens);
+
+            if(detecterCollisions(listeAliens)){
+                Mix_Chunk* listen = Mix_LoadWAV("music/hey_listen.mp3");
+                if (!listen) {
+                    printf("Erreur lors du chargement du bruitage: %s\n", Mix_GetError());
+                    return 1;
+                }
+                int channel = Mix_PlayChannel(-1, listen, 0); // -1 pour choisir un canal disponible, 0 pour jouer une seule fois
+                if (channel == -1) {
+                    printf("Erreur lors de la lecture du bruitage: %s\n", Mix_GetError());
+                    return 1;
+                }
+            };
 
             while (courant != NULL) {
                 dessinerAlien(courant);
@@ -324,6 +337,7 @@ ProgramState runSimulation() {
                 }
                 courant = courant->next;
             }
+
 
             mettreAJourAffichage();
             SDL_Delay(refreshDelay);

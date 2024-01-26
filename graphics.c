@@ -103,7 +103,8 @@ void collisionsDamages(Alien *alien1, Alien *alien2) {
     }
 }
 
-void detecterCollisions(Alien *listeAliens) {
+int detecterCollisions(Alien *listeAliens) {
+    int r = 0;
     Alien *alien1 = listeAliens;
 
     while (alien1 != NULL) {
@@ -114,12 +115,14 @@ void detecterCollisions(Alien *listeAliens) {
             SDL_Rect rectangle2 = {alien2->x, alien2->y, alien2->width, alien2->height};
 
             if (SDL_HasIntersection(&rectangle1, &rectangle2) == SDL_TRUE) {
+                r=1;
                 collisionsDamages(alien1, alien2);
             }
             alien2 = alien2->next;
         }
         alien1 = alien1->next;
     }
+    return r;
 }
 
 void itemGenerer(SDL_Renderer* renderer, int x, int y, int size, SDL_Color fillColor, SDL_Color borderColor) {
