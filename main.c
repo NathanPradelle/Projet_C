@@ -11,6 +11,8 @@
 #define MENU_SIZE 4
 
 char *fichier_actuel;
+Alien *listeAliens = NULL;
+int numberOfAliens = 0;
 
 int refreshDelay = 0;
 int maxAliens = 20;
@@ -69,7 +71,7 @@ int main() {
                 state = runSimulation();
                 break;
             case QUIT:
-                state = QUIT;
+                return QUIT;
                 break;
         break;
         }
@@ -142,34 +144,59 @@ ProgramState runMenu() {
                         }
                         break;
                 }
-            } else if (sauvegardeActif && event.type == SDL_MOUSEBUTTONDOWN) {
-            // int mouseX = event.button.x;
-            // int mouseY = event.button.y;
+            }
+            else if (sauvegardeActif && event.type == SDL_MOUSEBUTTONDOWN) {
+            int mouseX = event.button.x;
+            int mouseY = event.button.y;
+            int xBouton = (screenWidth - (3 * largeurBouton + 2 * espacementBouton)) / 2;
+            int yBouton = (screenHeight - (4 * hauteurBouton + 2 * espacementBouton)) / 2;
 
-            // if (){
-            //     viderFichier("sauvegarde_1.txt")
-            // }
-            // if (){
-            //     viderFichier("sauvegarde2.txt")
-            // }
-            // if (){
-            //     viderFichier("sauvegarde_3.txt")
-            // }
-            // if (){
-            //     chargerListeDepuisFichier("sauvegarde_1.txt", &listeAliens, &numberOfAliens);
-            //     fichier_actuel = "sauvegarde_1.txt"
-            // }
-            // if (){
-            //     chargerListeDepuisFichier("sauvegarde_2.txt", &listeAliens, &numberOfAliens);
-            //     fichier_actuel = "sauvegarde_2.txt"
-            // }
-            // if (){
-            //     chargerListeDepuisFichier("sauvegarde_3.txt", &listeAliens, &numberOfAliens);
-            //     fichier_actuel = "sauvegarde_3.txt"
-            // }
-            // if (){
-            //     sauvegardeActif = !sauvegardeActif;
-            // }
+            if (mouseX >= xBouton + largeurBouton + espacementBouton && mouseX <= xBouton + largeurBouton + espacementBouton + largeurBouton &&
+                mouseY >= yBouton && mouseY <= yBouton + hauteurBouton){
+                viderFichier("sauvegarde_1.txt");
+            }
+            if (mouseX >= xBouton + largeurBouton + espacementBouton && mouseX <= xBouton + largeurBouton + espacementBouton + largeurBouton &&
+                mouseY >= yBouton + hauteurBouton + espacementBouton && mouseY <= yBouton + hauteurBouton + espacementBouton + hauteurBouton){
+                viderFichier("sauvegarde2.txt");
+            }
+            if (mouseX >= xBouton + largeurBouton + espacementBouton && mouseX <= xBouton + largeurBouton + espacementBouton + largeurBouton &&
+                mouseY >= yBouton + 2 * (hauteurBouton + espacementBouton) && mouseY <= yBouton + 2 * (hauteurBouton + espacementBouton) + hauteurBouton){
+                viderFichier("sauvegarde_3.txt");
+            }
+            if (mouseX >= xBouton + 2 * (largeurBouton + espacementBouton) && mouseX <= xBouton + 2 * (largeurBouton + espacementBouton) + largeurBouton &&
+                mouseY >= yBouton && mouseY <= yBouton + hauteurBouton){
+                if(!chargerListeDepuisFichier("sauvegarde_1.txt", &listeAliens, &numberOfAliens)){
+                    fprintf(stderr, "Erreur lors du chargement du fichier\n");
+                } else {
+                free(fichier_actuel);
+                fichier_actuel = "sauvegarde_1.txt";
+                return SIMULATION;
+                }
+            }
+            if (mouseX >= xBouton + 2 * (largeurBouton + espacementBouton) && mouseX <= xBouton + 2 * (largeurBouton + espacementBouton) + largeurBouton &&
+                mouseY >= yBouton + hauteurBouton + espacementBouton && mouseY <= yBouton + hauteurBouton + espacementBouton + hauteurBouton){
+                if(!chargerListeDepuisFichier("sauvegarde_2.txt", &listeAliens, &numberOfAliens)){
+                    fprintf(stderr, "Erreur lors du chargement du fichier\n");
+                } else {
+                free(fichier_actuel);
+                fichier_actuel = "sauvegarde_2.txt";
+                return SIMULATION;
+                }
+            }
+            if (mouseX >= xBouton + 2 * (largeurBouton + espacementBouton) && mouseX <= xBouton + 2 * (largeurBouton + espacementBouton) + largeurBouton &&
+                mouseY >= yBouton + 2 * (hauteurBouton + espacementBouton) && mouseY <= yBouton + 2 * (hauteurBouton + espacementBouton) + hauteurBouton){
+                if(!chargerListeDepuisFichier("sauvegarde_3.txt", &listeAliens, &numberOfAliens)){
+                    fprintf(stderr, "Erreur lors du chargement du fichier\n");
+                } else {
+                free(fichier_actuel);
+                fichier_actuel = "sauvegarde_3.txt";
+                return SIMULATION;
+                }
+            }
+            if (mouseX >= xBouton + largeurBouton + espacementBouton && mouseX <= xBouton + largeurBouton + espacementBouton + largeurBouton &&
+                mouseY >= yBouton + 3 * (hauteurBouton + espacementBouton) && mouseY <= yBouton + 3 * (hauteurBouton + espacementBouton) + hauteurBouton){
+                sauvegardeActif = !sauvegardeActif;
+            }
         }
 
         if(!sauvegardeActif){
@@ -227,11 +254,10 @@ ProgramState runMenu() {
         SDL_RenderPresent(renderer);
 
         } else{
-
-            // int xBouton = (screenWidth - (3 * largeurBouton + 2 * espacementBouton)) / 2;
-            // int yBouton = (screenHeight - (4 * hauteurBouton + 2 * espacementBouton)) / 2;
-
-            // mettreAJourAffichageSauvegarde(xBouton, yBouton);
+            int xBouton = (screenWidth - (3 * largeurBouton + 2 * espacementBouton)) / 2;
+            int yBouton = (screenHeight - (4 * hauteurBouton + 2 * espacementBouton)) / 2;
+            
+            mettreAJourAffichageSauvegarde(xBouton, yBouton);
         }
     }
     }
@@ -254,8 +280,6 @@ ProgramState runSimulation() {
     int xBouton = (screenWidth - largeurBouton) / 2;
     int yBouton = (screenHeight - (3 * hauteurBouton + 2 * espacementBouton)) / 2;
 
-    Alien *listeAliens = NULL;
-    int numberOfAliens = 0;
     Alien *courant = NULL;
 
     SDL_Event event;
@@ -291,11 +315,17 @@ ProgramState runSimulation() {
                     continuer = 0; // Quitte l'application
                 }
 
-                if (mouseX >= xBouton && mouseX <= xBouton + largeurBouton &&
-                    mouseY >= yBouton + 2 * (hauteurBouton + espacementBouton) &&
-                    mouseY <= yBouton + 3 * (hauteurBouton + espacementBouton)) {
-                    actionBoutonSauvegarder(fichier_actuel, listeAliens);
-                }
+            if (mouseX >= xBouton && mouseX <= xBouton + largeurBouton &&
+                mouseY >= yBouton + 2 * (hauteurBouton + espacementBouton) &&
+                mouseY <= yBouton + 3 * (hauteurBouton + espacementBouton)) {
+                    if(!fichier_actuel){
+                        char *fichierVide = verifVide();
+                        actionBoutonSauvegarder(fichierVide, listeAliens);
+                        free(fichierVide);
+                    }else {
+                        actionBoutonSauvegarder(fichier_actuel, listeAliens);
+                        }
+            }
 
                 if (mouseX >= xBouton && mouseX <= xBouton + largeurBouton &&
                     mouseY >= yBouton + 3 * (hauteurBouton + espacementBouton) &&

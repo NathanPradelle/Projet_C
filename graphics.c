@@ -270,18 +270,17 @@ void actionBoutonSauvegarder(const char *nomFichier, Alien *listeAliens) {
     fclose(fichier);
 }
 
-void chargerListeDepuisFichier(const char *nomFichier, Alien **listeAliens, int *numberOfAliens) {
-    // Open file in reading mode
-    FILE *fichier = fopen(nomFichier, "r");
-
-    if (fichier == NULL) {
-        fprintf(stderr, "Erreur lors de l'ouverture du fichier : %s\n", nomFichier);
-        return;
-    }
+int chargerListeDepuisFichier(const char *nomFichier, Alien **listeAliens, int *numberOfAliens) {
+    // Ouvrir le fichier en mode lecture
 
     viderListeAliens(listeAliens);
     long id;
     int x, y;
+    FILE *fichier = fopen(nomFichier, "r");
+    int byte = fgetc(fichier);
+    if (byte == EOF) {
+        return 0;
+    }
 
     // Read file and update aliens
     while (fscanf(fichier, "%ld %d %d", &id, &x, &y) == 3) {
@@ -289,6 +288,7 @@ void chargerListeDepuisFichier(const char *nomFichier, Alien **listeAliens, int 
     }
 
     fclose(fichier);
+    return 1;
 }
 
 void viderFichier(const char *chemin) {
@@ -302,4 +302,32 @@ void viderFichier(const char *chemin) {
     fprintf(fichier, "");
 
     fclose(fichier);
+
+    printf("Fichier vidé avec succès.\n");
+}
+
+char *verifVide() {
+    for (int i = 1; i < 4; i++) {
+        char fileName[20];
+        sprintf(fileName, "sauvegarde_%d.txt", i);
+        char *result = malloc(strlen(fileName) + 1);
+        FILE *saveFile = fopen(fileName, "r");
+        if (saveFile == NULL) {
+            printf("ERREUR\n");
+            return "Erreur";
+        }
+
+        int byte = fgetc(saveFile);
+
+        if (byte == EOF) {
+            fclose(saveFile);
+            strcpy(result, fileName);
+            return result;
+        }
+
+        fclose(saveFile);
+        free(result);
+    }
+    return NULL;
+
 }
